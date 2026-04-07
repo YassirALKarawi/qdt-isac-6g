@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f2027"/>
+      <stop offset="50%" stop-color="#203a43"/>
+      <stop offset="100%" stop-color="#2c5364"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00c6ff"/>
+      <stop offset="100%" stop-color="#0072ff"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f7971e"/>
+      <stop offset="100%" stop-color="#ffd200"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="300" fill="url(#bg)"/>
+  
+  <!-- Decorative grid -->
+  <g opacity="0.04" stroke="white" stroke-width="1">
+    <line x1="0" y1="50" x2="1200" y2="50"/><line x1="0" y1="100" x2="1200" y2="100"/>
+    <line x1="0" y1="150" x2="1200" y2="150"/><line x1="0" y1="200" x2="1200" y2="200"/>
+    <line x1="0" y1="250" x2="1200" y2="250"/>
+    <line x1="100" y1="0" x2="100" y2="300"/><line x1="200" y1="0" x2="200" y2="300"/>
+    <line x1="300" y1="0" x2="300" y2="300"/><line x1="400" y1="0" x2="400" y2="300"/>
+    <line x1="500" y1="0" x2="500" y2="300"/><line x1="600" y1="0" x2="600" y2="300"/>
+    <line x1="700" y1="0" x2="700" y2="300"/><line x1="800" y1="0" x2="800" y2="300"/>
+    <line x1="900" y1="0" x2="900" y2="300"/><line x1="1000" y1="0" x2="1000" y2="300"/>
+    <line x1="1100" y1="0" x2="1100" y2="300"/>
+  </g>
+
+  <!-- Decorative circles (nodes) -->
+  <g opacity="0.06">
+    <circle cx="80" cy="60" r="40" fill="none" stroke="#00c6ff" stroke-width="1"/>
+    <circle cx="180" cy="200" r="25" fill="none" stroke="#0072ff" stroke-width="1"/>
+    <circle cx="1050" cy="80" r="35" fill="none" stroke="#00c6ff" stroke-width="1"/>
+    <circle cx="1120" cy="220" r="20" fill="none" stroke="#ffd200" stroke-width="1"/>
+    <circle cx="950" cy="240" r="30" fill="none" stroke="#0072ff" stroke-width="1"/>
+  </g>
+
+  <!-- Connecting lines (network feel) -->
+  <g opacity="0.08" stroke="#00c6ff" stroke-width="1">
+    <line x1="80" y1="60" x2="180" y2="200"/>
+    <line x1="1050" y1="80" x2="1120" y2="220"/>
+    <line x1="1050" y1="80" x2="950" y2="240"/>
+    <line x1="950" y1="240" x2="1120" y2="220"/>
+  </g>
+
+  <!-- Accent line -->
+  <rect x="0" y="295" width="1200" height="5" fill="url(#accent)"/>
+
+  <!-- Left: icon block -->
+  <g transform="translate(100, 100)">
+    <!-- Quantum symbol -->
+    <circle cx="0" cy="50" r="35" fill="none" stroke="url(#accent)" stroke-width="2" opacity="0.6"/>
+    <ellipse cx="0" cy="50" rx="35" ry="15" fill="none" stroke="url(#accent)" stroke-width="1.5" opacity="0.4" transform="rotate(60,0,50)"/>
+    <ellipse cx="0" cy="50" rx="35" ry="15" fill="none" stroke="url(#accent)" stroke-width="1.5" opacity="0.4" transform="rotate(-60,0,50)"/>
+    <circle cx="0" cy="50" r="5" fill="#00c6ff" opacity="0.8"/>
+  </g>
+
+  <!-- Title -->
+  <text x="200" y="110" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="52" font-weight="800" fill="white" letter-spacing="3">QDT-ISAC</text>
+  
+  <!-- Subtitle -->
+  <text x="200" y="150" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="16" fill="#a0d2db" letter-spacing="1">QUANTUM-ASSISTED DIGITAL TWIN</text>
+
+  <!-- Description -->
+  <text x="200" y="185" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14" fill="#7fb3c0">Closed-Loop Secure and Adaptive ISAC in 6G Open RAN</text>
+
+  <!-- Tags -->
+  <g transform="translate(200, 210)">
+    <rect x="0" y="0" width="50" height="22" rx="4" fill="#00c6ff" opacity="0.15"/>
+    <text x="25" y="15" text-anchor="middle" font-family="monospace" font-size="10" fill="#00c6ff">6G</text>
+    
+    <rect x="60" y="0" width="55" height="22" rx="4" fill="#00c6ff" opacity="0.15"/>
+    <text x="87" y="15" text-anchor="middle" font-family="monospace" font-size="10" fill="#00c6ff">ISAC</text>
+    
+    <rect x="125" y="0" width="100" height="22" rx="4" fill="#00c6ff" opacity="0.15"/>
+    <text x="175" y="15" text-anchor="middle" font-family="monospace" font-size="10" fill="#00c6ff">Digital Twin</text>
+    
+    <rect x="235" y="0" width="72" height="22" rx="4" fill="#ffd200" opacity="0.15"/>
+    <text x="271" y="15" text-anchor="middle" font-family="monospace" font-size="10" fill="#ffd200">Quantum</text>
+    
+    <rect x="317" y="0" width="70" height="22" rx="4" fill="#00c6ff" opacity="0.15"/>
+    <text x="352" y="15" text-anchor="middle" font-family="monospace" font-size="10" fill="#00c6ff">Security</text>
+
+    <rect x="397" y="0" width="80" height="22" rx="4" fill="#00c6ff" opacity="0.15"/>
+    <text x="437" y="15" text-anchor="middle" font-family="monospace" font-size="10" fill="#00c6ff">Open RAN</text>
+  </g>
+
+  <!-- Right side: mini stats -->
+  <g transform="translate(850, 85)" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+    <text x="0" y="0" font-size="11" fill="#7fb3c0" letter-spacing="1">SIMULATION SCALE</text>
+    <line x1="0" y1="8" x2="200" y2="8" stroke="#2c5364" stroke-width="1"/>
+
+    <text x="0" y="35" font-size="28" font-weight="700" fill="white">50</text>
+    <text x="50" y="35" font-size="11" fill="#7fb3c0">Monte Carlo runs</text>
+
+    <text x="0" y="70" font-size="28" font-weight="700" fill="white">3000</text>
+    <text x="80" y="70" font-size="11" fill="#7fb3c0">time slots</text>
+
+    <text x="0" y="105" font-size="28" font-weight="700" fill="white">5</text>
+    <text x="25" y="105" font-size="11" fill="#7fb3c0">baseline methods</text>
+
+    <text x="0" y="140" font-size="28" font-weight="700" fill="white">12+</text>
+    <text x="55" y="140" font-size="11" fill="#7fb3c0">parameter sweeps</text>
+  </g>
+</svg>

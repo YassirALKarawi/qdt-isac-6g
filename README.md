@@ -1,14 +1,13 @@
 <p align="center">
-  <img src="figures/architecture.png" width="850"/>
+  <img src="figures/banner.png" width="100%"/>
 </p>
 
-<h1 align="center">QDT-ISAC</h1>
-<h3 align="center">Quantum-Assisted Digital Twin for Closed-Loop Secure and Adaptive ISAC in 6G Open RAN</h3>
-
 <p align="center">
-  <a href="#-quick-start"><img src="https://img.shields.io/badge/python-3.9+-blue.svg?style=for-the-badge&logo=python&logoColor=white" alt="Python"/></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg?style=for-the-badge" alt="MIT"/></a>
-  <a href="#-results"><img src="https://img.shields.io/badge/status-Research_Grade-orange.svg?style=for-the-badge" alt="Status"/></a>
+  <a href="https://github.com/YassirALKarawi/qdt-isac-6g/actions/workflows/ci.yml"><img src="https://github.com/YassirALKarawi/qdt-isac-6g/actions/workflows/ci.yml/badge.svg" alt="CI"/></a>
+  <a href="#-quick-start"><img src="https://img.shields.io/badge/python-3.9+-3776AB.svg?style=flat-square&logo=python&logoColor=white" alt="Python"/></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="MIT"/></a>
+  <a href="#-example-results"><img src="https://img.shields.io/badge/status-Research_Grade-orange.svg?style=flat-square" alt="Status"/></a>
+  <a href="https://github.com/YassirALKarawi/qdt-isac-6g/stargazers"><img src="https://img.shields.io/github/stars/YassirALKarawi/qdt-isac-6g?style=flat-square&color=yellow" alt="Stars"/></a>
 </p>
 
 <p align="center">
@@ -18,6 +17,14 @@
   <br/>
   <sub>Designed for comparative algorithmic evaluation, reproducible experiments, and research prototyping.
   Not intended to represent a full standards-compliant physical-layer or deployment-grade Open RAN stack.</sub>
+</p>
+
+---
+
+## 🏛️ Architecture
+
+<p align="center">
+  <img src="figures/architecture.png" width="850"/>
 </p>
 
 ---
@@ -173,7 +180,8 @@ Weights adapt online via the closed-loop controller based on observed outage, de
 
 ---
 
-## 📁 Project Structure
+<details>
+<summary><h2>📁 Project Structure</h2></summary>
 
 ```
 qdt-isac-6g/
@@ -198,9 +206,12 @@ qdt-isac-6g/
 └── LICENSE
 ```
 
+</details>
+
 ---
 
-## 🔧 Available Sweeps
+<details>
+<summary><h2>🔧 Available Sweeps (12 experiments)</h2></summary>
 
 | Sweep | Parameter | Values |
 |:------|:----------|:-------|
@@ -216,6 +227,8 @@ qdt-isac-6g/
 | `twin_fidelity` | twin_sinr_noise_std | 0.5 – 10 dB |
 | `mobility` | user_speed_range | pedestrian – vehicular |
 | `weight_sweep` | weight_comm | 0.1 – 0.7 |
+
+</details>
 
 ---
 
