@@ -20,7 +20,7 @@ def run_baselines(cfg, odir, pdir, verbose=True):
     all_slots = {}
     for bl in range(5):
         c = copy.copy(cfg); c.baseline_id = bl
-        mc = MetricsCollector()
+        mc = MetricsCollector(steady_state_fraction=0.5)
         run_mc(c, mc, verbose=verbose)
         s = mc.summary_df()
         all_sum = pd.concat([all_sum, s], ignore_index=True)
@@ -57,9 +57,8 @@ def run_one_sweep(cfg, name, odir, pdir, verbose=True):
         bl_sums = pd.DataFrame()
         for v in vals:
             c = copy.copy(cfg); c.baseline_id = bl
-            if isinstance(v, tuple): setattr(c, param, v)
-            else: setattr(c, param, v)
-            mc = MetricsCollector()
+            setattr(c, param, v)
+            mc = MetricsCollector(steady_state_fraction=0.5)
             run_mc(c, mc, verbose=verbose)
             s = mc.summary_df()
             s['sweep_value'] = v if not isinstance(v, tuple) else str(v)
@@ -99,7 +98,7 @@ def main():
 
     if args.baseline is not None:
         cfg.baseline_id = args.baseline
-        mc = MetricsCollector()
+        mc = MetricsCollector(steady_state_fraction=0.5)
         run_mc(cfg, mc, verbose=True)
         mc.save(odir, f"bl{args.baseline}_")
     elif args.sweep:

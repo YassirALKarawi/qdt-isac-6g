@@ -12,7 +12,12 @@
 </p>
 
 <p align="center">
-  A research-grade discrete-time simulation framework for evaluating <b>Quantum-Assisted Digital Twin</b> architectures in <b>Integrated Sensing and Communication (ISAC)</b> systems for <b>6G Open RAN</b> networks.
+  A publication-oriented discrete-time simulation framework for evaluating
+  <b>quantum-assisted / quantum-inspired digital twin</b> control architectures in
+  <b>Integrated Sensing and Communication (ISAC)</b> systems for <b>6G Open RAN</b> networks.
+  <br/>
+  <sub>Designed for comparative algorithmic evaluation, reproducible experiments, and research prototyping.
+  Not intended to represent a full standards-compliant physical-layer or deployment-grade Open RAN stack.</sub>
 </p>
 
 ---
@@ -27,9 +32,20 @@
 | **Sensing** | Mono-static OFDM radar, Swerling-I P_d, CRLB range estimation, clutter |
 | **Digital Twin** | Imperfect: sync delay, measurement noise, SINR estimation error, state staleness |
 | **Security** | EWMA anomaly detection (dual-channel), Bayesian trust dynamics, jamming + spoofing |
-| **Quantum Assist** | Grover-inspired candidate screening with realistic decoherence and gate noise |
+| **Quantum Assist** | Quantum-inspired candidate screening for uncertainty-aware action ranking |
 | **Controller** | Closed-loop adaptive: per-BS power control, sensing/comm split, trust gating |
 | **Evaluation** | 50 Monte Carlo runs, 3000 slots, 12+ parameter sweeps, 95% CI |
+
+---
+
+## ⚠️ Current Limitations
+
+This framework is intentionally abstraction-driven and should be interpreted as a research simulation platform rather than a full deployment stack.
+
+- The quantum module is **quantum-inspired / quantum-assisted** at the algorithmic level, not a hardware-backed quantum optimisation engine
+- The sensing model is simplified and intended for comparative ISAC evaluation
+- The interference and scheduling models are abstracted for tractability
+- Security metrics are scenario-driven and should be interpreted as resilience indicators rather than full intrusion-detection benchmarks
 
 ---
 
@@ -43,7 +59,7 @@
 
 The Full Proposed method achieves the best overall trade-off across communication, sensing, security, and energy efficiency.
 
-### Baseline Comparison
+### Example Results (illustrative configuration: 5 MC × 500 slots)
 
 <p align="center">
   <img src="figures/baseline_bars.png" width="850"/>
@@ -130,6 +146,18 @@ python main.py --sweep clutter
 
 ---
 
+## 🔄 Reproducibility
+
+- **Python version:** 3.9+
+- **Seed-controlled** execution via `SimConfig(seed=...)`
+- **Monte Carlo averaging** supported via `--mc`
+- **Steady-state aggregation** computed over the latter 50% of the simulated time horizon
+- **Slot-level and run-level** results exported to CSV under `results/`
+- **Figures** saved under `plots/`
+- **Tests:** `python -m pytest tests/ -v`
+
+---
+
 ## 📐 Composite Utility
 
 $$J = w_c \cdot R_{\text{norm}} + w_s \cdot S + w_{\text{sec}} \cdot T - w_e \cdot E_{\text{norm}}$$
@@ -156,15 +184,17 @@ qdt-isac-6g/
 ├── sensing.py           # Radar SNR, Swerling-I P_d, CRLB
 ├── digital_twin.py      # Imperfect DT: delay, noise, staleness
 ├── security.py          # EWMA detection + Bayesian trust
-├── quantum_assist.py    # Grover-inspired candidate search
+├── quantum_assist.py    # Quantum-inspired candidate search
 ├── controller.py        # 5 baseline controllers
 ├── simulator.py         # Discrete-time simulation engine
-├── metrics.py           # CSV/JSON metrics export
+├── metrics.py           # CSV/JSON metrics export + CI95
 ├── plotting.py          # Publication-quality figures
 ├── main.py              # CLI entry point
+├── tests/               # Verification tests (pytest)
 ├── figures/             # Generated plots
 ├── results/             # Output CSV/JSON
 ├── requirements.txt
+├── requirements-dev.txt
 └── LICENSE
 ```
 
