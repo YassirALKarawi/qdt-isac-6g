@@ -1,63 +1,122 @@
-# QDT-ISAC: Quantum-Assisted Digital Twin for Secure Adaptive ISAC in 6G Open RAN
+<p align="center">
+  <img src="figures/architecture.png" width="850"/>
+</p>
 
-[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+<h1 align="center">QDT-ISAC</h1>
+<h3 align="center">Quantum-Assisted Digital Twin for Closed-Loop Secure and Adaptive ISAC in 6G Open RAN</h3>
 
-A research-grade discrete-time simulation framework for evaluating **Quantum-Assisted Digital Twin** architectures in **Integrated Sensing and Communication (ISAC)** systems for **6G Open RAN** networks.
+<p align="center">
+  <a href="#-quick-start"><img src="https://img.shields.io/badge/python-3.9+-blue.svg?style=for-the-badge&logo=python&logoColor=white" alt="Python"/></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg?style=for-the-badge" alt="MIT"/></a>
+  <a href="#-results"><img src="https://img.shields.io/badge/status-Research_Grade-orange.svg?style=for-the-badge" alt="Status"/></a>
+</p>
 
-## Key Features
+<p align="center">
+  A research-grade discrete-time simulation framework for evaluating <b>Quantum-Assisted Digital Twin</b> architectures in <b>Integrated Sensing and Communication (ISAC)</b> systems for <b>6G Open RAN</b> networks.
+</p>
 
-- **Closed-loop ISAC simulator** with 10 ms slot resolution over 3000 time slots
-- **Imperfect Digital Twin** with synchronisation delay, measurement noise, and state staleness
-- **Quantum-assisted resource allocation** using Grover-inspired candidate screening with realistic decoherence
-- **EWMA-based anomaly detection** with Bayesian trust dynamics
-- **Adaptive power control** and sensing/communication resource balancing
-- **5 baseline methods** for rigorous comparative evaluation
-- **12+ parameter sweeps** for comprehensive sensitivity analysis
-- **Publication-quality plots** with 95% confidence intervals
+---
 
-## Architecture
+## ✨ Key Features
 
-```
-┌─────────────┐    ┌──────────────┐    ┌──────────────┐
-│  6G Open RAN │───▶│  Digital Twin │───▶│   Quantum    │
-│  (4 BS, 40   │    │  (Imperfect) │    │   Assist     │
-│   UE, 10 TG) │    │              │    │  (Grover)    │
-└──────┬───────┘    └──────┬───────┘    └──────┬───────┘
-       │                   │                   │
-       ▼                   ▼                   ▼
-┌──────────────────────────────────────────────────────┐
-│           Adaptive Controller (Closed-Loop)           │
-│  • Security-aware trust gating                        │
-│  • Per-BS power adaptation                            │
-│  • Sensing/comm resource split                        │
-└──────────────────────────────────────────────────────┘
-```
+| Module | Description |
+|:-------|:-----------|
+| **6G Open RAN** | 4 BS × 64 antennas, 40 UE, 10 sensing targets, 1 km² area |
+| **Channel** | 3GPP path loss, log-normal shadowing, Rician fading, AR(1) temporal correlation |
+| **Communication** | OFDMA downlink, per-RB SINR, Shannon throughput, outage detection |
+| **Sensing** | Mono-static OFDM radar, Swerling-I P_d, CRLB range estimation, clutter |
+| **Digital Twin** | Imperfect: sync delay, measurement noise, SINR estimation error, state staleness |
+| **Security** | EWMA anomaly detection (dual-channel), Bayesian trust dynamics, jamming + spoofing |
+| **Quantum Assist** | Grover-inspired candidate screening with realistic decoherence and gate noise |
+| **Controller** | Closed-loop adaptive: per-BS power control, sensing/comm split, trust gating |
+| **Evaluation** | 50 Monte Carlo runs, 3000 slots, 12+ parameter sweeps, 95% CI |
 
-## Baselines
+---
 
-| ID | Method | DT | Quantum | Security |
-|----|--------|----|---------|----------|
-| 0 | Static ISAC | ✗ | ✗ | ✗ |
-| 1 | Adaptive ISAC | ✗ | ✗ | ✗ |
-| 2 | DT-guided (no QA) | ✓ | ✗ | ✓ |
-| 3 | DT+QA (attack-unaware) | ✓ | ✓ | ✗ |
-| 4 | **Full Proposed** | ✓ | ✓ | ✓ |
+## 📊 Results
 
-## Quick Start
+### Multi-Objective Performance
+
+<p align="center">
+  <img src="figures/radar_comparison.png" width="550"/>
+</p>
+
+The Full Proposed method achieves the best overall trade-off across communication, sensing, security, and energy efficiency.
+
+### Baseline Comparison
+
+<p align="center">
+  <img src="figures/baseline_bars.png" width="850"/>
+</p>
+
+| Method | Sum Rate (Mbps) | P_d | Trust | Energy | Utility |
+|:-------|:-:|:-:|:-:|:-:|:-:|
+| Static ISAC | 1064 ± 121 | 0.600 | 1.000 | 0.996 | 0.276 |
+| Adaptive ISAC | 976 ± 106 | 0.559 | 1.000 | 0.997 | 0.264 |
+| DT (no QA) | 1009 ± 76 | 0.546 | 0.839 | 0.997 | 0.352 |
+| DT+QA (no Sec) | 1051 ± 130 | 0.524 | 1.000 | 0.998 | 0.263 |
+| **Full Proposed** | **1086 ± 95** | **0.743** | 0.837 | **0.965** | **0.397** |
+
+### Time Evolution — Full Proposed Method
+
+<p align="center">
+  <img src="figures/time_evolution.png" width="850"/>
+</p>
+
+### Cumulative Distribution Functions
+
+<p align="center">
+  <img src="figures/cdf_all.png" width="850"/>
+</p>
+
+---
+
+## 🔬 Sensitivity Analysis
+
+### Attack Intensity Sweep
+
+<p align="center">
+  <img src="figures/sweep_anomaly.png" width="850"/>
+</p>
+
+The Full Proposed method maintains superior utility under increasing anomaly probability, demonstrating the value of security-aware closed-loop control.
+
+### Digital Twin Delay Sweep
+
+<p align="center">
+  <img src="figures/sweep_twin_delay.png" width="850"/>
+</p>
+
+Performance degrades gracefully as twin synchronisation delay increases, validating the framework's robustness to imperfect state information.
+
+---
+
+## 🏗️ Baselines
+
+| ID | Method | Digital Twin | Quantum Assist | Security | Description |
+|:--:|:-------|:--:|:--:|:--:|:-----------|
+| 0 | Static ISAC | ✗ | ✗ | ✗ | Fixed equal allocation, no adaptation |
+| 1 | Adaptive ISAC | ✗ | ✗ | ✗ | Measurement-based rebalancing |
+| 2 | DT-guided | ✓ | ✗ | ✓ | Twin-predicted PF allocation |
+| 3 | DT+QA (attack-unaware) | ✓ | ✓ | ✗ | Quantum search, blind to attacks |
+| 4 | **Full Proposed** | ✓ | ✓ | ✓ | Complete closed-loop system |
+
+---
+
+## 🚀 Quick Start
 
 ```bash
 # Clone
-git clone https://github.com/YOUR_USERNAME/qdt-isac-6g.git
+git clone https://github.com/YassirALKarawi/qdt-isac-6g.git
 cd qdt-isac-6g
 
-# Install dependencies
+# Install
 pip install -r requirements.txt
 
-# Quick test (3 MC runs, 300 slots)
+# Quick test (3 MC, 300 slots)
 python main.py --quick
 
-# Full JSAC-grade run (50 MC, 3000 slots)
+# Full run (50 MC, 3000 slots)
 python main.py --mc 50 --slots 3000
 
 # Single baseline
@@ -69,78 +128,81 @@ python main.py --sweep twin_delay
 python main.py --sweep clutter
 ```
 
-## Results (5 MC × 500 slots)
+---
 
-| Method | Sum Rate (Mbps) | P_d | Trust | Energy | Utility |
-|--------|:-:|:-:|:-:|:-:|:-:|
-| Static ISAC | 1064 ± 121 | 0.600 | 1.000 | 0.996 | 0.276 |
-| Adaptive ISAC | 976 ± 106 | 0.559 | 1.000 | 0.997 | 0.264 |
-| DT (no QA) | 1009 ± 76 | 0.546 | 0.839 | 0.997 | 0.352 |
-| DT+QA (no Sec) | 1051 ± 130 | 0.524 | 1.000 | 0.998 | 0.263 |
-| **Full Proposed** | **1086 ± 95** | **0.743** | 0.837 | **0.965** | **0.397** |
-
-## Composite Utility
+## 📐 Composite Utility
 
 $$J = w_c \cdot R_{\text{norm}} + w_s \cdot S + w_{\text{sec}} \cdot T - w_e \cdot E_{\text{norm}}$$
 
-where:
-- $R_{\text{norm}}$: normalised sum-rate
-- $S$: sensing utility (detection probability + tracking accuracy)
-- $T$: trust score (security-aware, adaptive threshold)
-- $E_{\text{norm}}$: normalised energy consumption
+| Symbol | Component | Source |
+|:------:|:----------|:------|
+| $R_{\text{norm}}$ | Normalised sum-rate | `communication.py` |
+| $S$ | Sensing utility (P_d + tracking) | `sensing.py` |
+| $T$ | Trust score (Bayesian adaptive) | `security.py` |
+| $E_{\text{norm}}$ | Energy consumption (PA + DSP + circuit) | `network.py` |
 
-## Project Structure
+Weights adapt online via the closed-loop controller based on observed outage, detection, and trust levels.
+
+---
+
+## 📁 Project Structure
 
 ```
 qdt-isac-6g/
-├── config.py           # All simulation parameters + sweep configs
-├── channel.py          # Path loss, shadowing, Rician fading, AR(1)
-├── network.py          # BS, UE, target entities + mobility
-├── communication.py    # SINR, throughput, outage (OFDMA downlink)
-├── sensing.py          # Radar SNR, Swerling-I P_d, CRLB tracking
-├── digital_twin.py     # Imperfect DT: delay, noise, staleness
-├── security.py         # EWMA anomaly detection + Bayesian trust
-├── quantum_assist.py   # Grover-inspired candidate screening
-├── controller.py       # 5 baseline controllers
-├── simulator.py        # Discrete-time simulation engine
-├── metrics.py          # Metrics collection + CSV/JSON export
-├── plotting.py         # Publication-quality matplotlib figures
-├── main.py             # CLI entry point
+├── config.py            # Simulation parameters + 12 sweep configs
+├── channel.py           # Path loss, shadowing, Rician fading, AR(1)
+├── network.py           # BS, UE, targets + mobility + energy model
+├── communication.py     # SINR, throughput, outage (OFDMA)
+├── sensing.py           # Radar SNR, Swerling-I P_d, CRLB
+├── digital_twin.py      # Imperfect DT: delay, noise, staleness
+├── security.py          # EWMA detection + Bayesian trust
+├── quantum_assist.py    # Grover-inspired candidate search
+├── controller.py        # 5 baseline controllers
+├── simulator.py         # Discrete-time simulation engine
+├── metrics.py           # CSV/JSON metrics export
+├── plotting.py          # Publication-quality figures
+├── main.py              # CLI entry point
+├── figures/             # Generated plots
+├── results/             # Output CSV/JSON
 ├── requirements.txt
-├── LICENSE
-└── README.md
+└── LICENSE
 ```
 
-## Available Sweeps
+---
+
+## 🔧 Available Sweeps
 
 | Sweep | Parameter | Values |
-|-------|-----------|--------|
+|:------|:----------|:-------|
 | `user_density` | n_users | 10, 20, 40, 60, 80 |
 | `anomaly_prob` | anomaly_prob | 0.0 – 0.20 |
 | `twin_delay` | twin_sync_delay_slots | 0 – 50 |
 | `clutter` | clutter_to_noise_ratio_db | 0 – 15 dB |
-| `target_speed` | target_speed_range | 1–100 m/s |
+| `target_speed` | target_speed_range | 1 – 100 m/s |
 | `sensing_power` | sensing_power_fraction | 0.05 – 0.40 |
 | `target_density` | n_targets | 2 – 40 |
-| `mobility` | user_speed_range | pedestrian – vehicular |
 | `scalability` | n_bs | 2 – 16 |
 | `quantum_onoff` | qa_enabled | True / False |
 | `twin_fidelity` | twin_sinr_noise_std | 0.5 – 10 dB |
+| `mobility` | user_speed_range | pedestrian – vehicular |
+| `weight_sweep` | weight_comm | 0.1 – 0.7 |
 
-## Citation
+---
 
-If you use this code in your research, please cite:
+## 📖 Citation
 
 ```bibtex
 @article{alkarawi2026qdt,
-  title={Quantum-Assisted Digital Twin for Closed-Loop Secure and 
-         Adaptive ISAC in 6G Open RAN},
-  author={Al-Karawi, Yassir},
-  journal={IEEE Journal on Selected Areas in Communications},
-  year={2026}
+  title   = {Quantum-Assisted Digital Twin for Closed-Loop Secure and 
+             Adaptive ISAC in 6G Open RAN},
+  author  = {Al-Karawi, Yassir Ameen Ahmed},
+  journal = {IEEE Journal on Selected Areas in Communications},
+  year    = {2026}
 }
 ```
 
-## License
+---
+
+## 📜 License
 
 This project is licensed under the MIT License — see [LICENSE](LICENSE) for details.
