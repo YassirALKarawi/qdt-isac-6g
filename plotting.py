@@ -122,7 +122,8 @@ def make_table(sdf: pd.DataFrame) -> pd.DataFrame:
             'avg_pd_mean':'P_d', 'sense_util_mean':'Sense Util',
             'twin_err_mean':'Twin Err', 'trust_mean':'Trust',
             'outage_mean':'Outage', 'energy_norm_mean':'Energy(norm)',
-            'latency_ms_mean':'Latency(ms)', 'utility_mean':'Utility'}
+            'search_cost_mean':'Search Cost', 'robustness_gain_mean':'Robustness',
+            'utility_mean':'Utility'}
     rows = []
     for bl in sorted(sdf['baseline_id'].unique()):
         bd = sdf[sdf['baseline_id']==bl]

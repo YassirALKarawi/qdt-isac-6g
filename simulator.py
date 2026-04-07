@@ -70,6 +70,23 @@ def run_one(cfg: SimConfig, run_id: int, mc: MetricsCollector, extra=None):
 
         utility = w_c * R_norm + w_s * S_norm + w_sec * T_norm - w_e * energy_norm
 
+        # --- Derived metrics for paper Results section ---
+        # search_cost: quantum evals / classical evals (lower = better)
+        if qa:
+            total_evals = qa.q_evals + qa.c_evals
+            search_cost = qa.q_evals / max(total_evals, 1)
+        else:
+            search_cost = 1.0  # classical = full cost
+
+        # adaptation_gain: weight divergence from initial (shows controller learning)
+        w_init = [cfg.weight_comm, cfg.weight_sense, cfg.weight_sec, cfg.weight_energy]
+        w_now = [ctrl.w_c, ctrl.w_s, ctrl.w_sec, ctrl.w_e]
+        adaptation_gain = sum(abs(a - b) for a, b in zip(w_init, w_now))
+
+        # robustness_gain: utility maintained despite active attacks
+        n_active = len([a for a in sec.active_attacks if a[3] < 10])
+        robustness_gain = utility / (1.0 + 0.1 * n_active) if n_active > 0 else utility
+
         mc.record({
             'slot': slot,
             'sum_rate': sr,
@@ -87,6 +104,9 @@ def run_one(cfg: SimConfig, run_id: int, mc: MetricsCollector, extra=None):
             'energy': total_energy_w,
             'energy_norm': energy_norm,
             'utility': utility,
+            'search_cost': search_cost,
+            'adaptation_gain': adaptation_gain,
+            'robustness_gain': robustness_gain,
         })
 
     mc.end_run(run_id, cfg.baseline_id, extra)

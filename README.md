@@ -6,7 +6,7 @@
   <a href="https://github.com/YassirALKarawi/qdt-isac-6g/actions/workflows/ci.yml"><img src="https://github.com/YassirALKarawi/qdt-isac-6g/actions/workflows/ci.yml/badge.svg" alt="CI"/></a>
   <a href="#-quick-start"><img src="https://img.shields.io/badge/python-3.9+-3776AB.svg?style=flat-square&logo=python&logoColor=white" alt="Python"/></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="MIT"/></a>
-  <a href="#-example-results"><img src="https://img.shields.io/badge/status-Research_Grade-orange.svg?style=flat-square" alt="Status"/></a>
+  <a href="#-example-results"><img src="https://img.shields.io/badge/status-Research_Prototype-orange.svg?style=flat-square" alt="Status"/></a>
   <a href="https://github.com/YassirALKarawi/qdt-isac-6g/stargazers"><img src="https://img.shields.io/github/stars/YassirALKarawi/qdt-isac-6g?style=flat-square&color=yellow" alt="Stars"/></a>
 </p>
 

@@ -47,7 +47,8 @@ class MetricsCollector:
             s[f"{col}_std"] = ss[col].std()
 
         # Confidence intervals for key metrics
-        for col in ["sum_rate", "avg_pd", "trust", "utility", "energy"]:
+        for col in ["sum_rate", "avg_pd", "trust", "utility", "energy",
+                    "search_cost", "adaptation_gain", "robustness_gain"]:
             if col in ss.columns and len(ss) > 1:
                 std = ss[col].std()
                 s[f"{col}_ci95"] = 1.96 * std / np.sqrt(len(ss))
