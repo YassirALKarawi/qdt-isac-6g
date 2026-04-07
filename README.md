@@ -191,7 +191,7 @@ python main.py --sweep clutter
 - **Monte Carlo averaging** supported via `--mc`
 - **Steady-state aggregation** computed over the latter 50% of the simulated time horizon
 - **Slot-level and run-level** results exported to CSV under `results/`
-- **Figures** saved under `plots/`
+- **Figures** saved under `figures/`
 - **Tests:** `python -m pytest tests/ -v`
 
 ---
@@ -270,8 +270,9 @@ qdt-isac-6g/
   title   = {Quantum-Assisted Digital Twin for Closed-Loop Secure and 
              Adaptive ISAC in 6G Open RAN},
   author  = {Al-Karawi, Yassir Ameen Ahmed},
-  journal = {IEEE Journal on Selected Areas in Communications},
-  year    = {2026}
+  journal = {Submitted to IEEE Journal on Selected Areas in Communications},
+  year    = {2026},
+  note    = {Under review}
 }
 ```
 
