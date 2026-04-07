@@ -88,7 +88,7 @@ def main():
     if args.quick: cfg.n_monte_carlo = 3; cfg.n_slots = 300
     if args.mc: cfg.n_monte_carlo = args.mc
     if args.slots: cfg.n_slots = args.slots
-    odir, pdir = args.output, "plots"
+    odir, pdir = args.output, "figures"
     Path(odir).mkdir(exist_ok=True); Path(pdir).mkdir(exist_ok=True)
 
     t0 = time.time()
@@ -106,10 +106,12 @@ def main():
     else:
         run_baselines(cfg, odir, pdir)
         for sw in ['user_density', 'anomaly_prob', 'twin_delay',
-                    'target_speed', 'clutter', 'sensing_power', 'target_density']:
+                    'target_speed', 'clutter', 'sensing_power', 'target_density',
+                    'scalability', 'quantum_onoff', 'twin_fidelity', 'mobility',
+                    'weight_sweep']:
             run_one_sweep(cfg, sw, odir, pdir)
 
-    print(f"\nDone in {time.time()-t0:.1f}s | Results: {odir}/ | Plots: {pdir}/")
+    print(f"\nDone in {time.time()-t0:.1f}s | Results: {odir}/ | Figures: {pdir}/")
 
 if __name__ == '__main__':
     main()
