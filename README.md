@@ -280,4 +280,6 @@ qdt-isac-6g/
 
 ## 📜 License
 
-This project is licensed under the MIT License — see [LICENSE](LICENSE) for details.
+The **simulation code** in this repository is licensed under the MIT License — see [LICENSE](LICENSE) for details.
+
+The **manuscript** in `paper/` is © 2026 the author. If accepted, copyright will transfer to IEEE per their publication agreement. The manuscript is included for reference only and may not be redistributed without permission.
