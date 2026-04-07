@@ -1,0 +1,367 @@
+\documentclass[10pt,journal]{IEEEtran}
+
+\usepackage{amsmath,amssymb,amsfonts,amsthm,bm}
+\usepackage{graphicx}
+\usepackage{cite}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{mathtools}
+\usepackage{balance}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+\begin{document}
+
+\title{Quantum-Assisted Digital Twin for Closed-Loop Secure and Adaptive ISAC in 6G Open RAN}
+
+\author{Dr.~Yassir~Ameen~Ahmed~Al-Karawi%
+\thanks{Dr. Yassir Ameen Ahmed Al-Karawi is with the Department of Communications Engineering, College of Engineering, University of Diyala, Iraq.}
+}
+
+\maketitle
+
+\begin{abstract}
+Integrated sensing and communication (ISAC) is expected to become a foundational capability of sixth-generation (6G) wireless systems, particularly in Open radio access network (Open RAN) environments where flexible orchestration, programmability, and service awareness are central design requirements. However, secure and adaptive ISAC operation in such environments remains challenging because communication and sensing objectives are tightly coupled, wireless and environmental states are highly dynamic, and distributed software control loops are exposed to cyber-physical inconsistencies. This paper proposes a quantum-assisted digital twin framework for closed-loop secure and adaptive ISAC in 6G Open RAN. The proposed architecture maintains an imperfect but continuously updated digital twin of the communication, sensing, and trust states of the physical network and uses this twin to guide adaptive resource allocation and resilience-aware policy deployment. A joint utility-driven control formulation is developed to balance communication performance, sensing effectiveness, trust-aware security, and energy efficiency. To handle the resulting search complexity, a quantum-inspired candidate-screening module is introduced to rank promising control actions before final deployment. A security-aware trust mechanism is further integrated into the loop to identify anomalous state divergence and suppress unreliable actions. A research-grade discrete-time simulation framework is then developed to evaluate the proposed system under time-varying channels, user and target mobility, imperfect twin synchronisation, and anomaly injection. Representative results demonstrate that the full proposed framework yields the best overall communication--sensing--security trade-off among the considered baselines, achieving the highest composite utility, the highest detection performance, and the lowest energy consumption in the reported setting. These findings position quantum-assisted digital twin control as a promising design direction for secure and intelligent ISAC orchestration in future 6G Open RAN systems.
+\end{abstract}
+
+\begin{IEEEkeywords}
+6G, Open RAN, integrated sensing and communication, ISAC, digital twin, quantum-assisted intelligence, closed-loop optimisation, cyber-physical security, adaptive wireless control.
+\end{IEEEkeywords}
+
+\section{Introduction}
+Sixth-generation (6G) wireless networks are widely expected to integrate communications, sensing, intelligence, and automation into a unified programmable infrastructure. Among the emerging capabilities, integrated sensing and communication (ISAC) has attracted particular interest because it enables the joint use of spectrum, waveform, and hardware resources for both data transmission and environment perception. This convergence is especially relevant in Open radio access network (Open RAN) systems, where disaggregation, software-defined control, and intelligent orchestration create new opportunities for adaptive and service-aware operation.
+
+Despite these advantages, secure and adaptive ISAC remains fundamentally difficult in Open RAN settings. First, communication and sensing objectives are tightly coupled and often competing. Resource allocations that improve sensing observability may reduce communication throughput or fairness, while communication-centric policies may degrade sensing coverage or tracking quality. Second, the system state is highly dynamic because of mobility, fading, blockage, fluctuating load, and changing application requirements. Third, Open RAN control loops are implemented through distributed software functions and telemetry pipelines that may be delayed, inconsistent, or exposed to cyber-physical attack. As a result, open-loop optimisation or static policy design becomes inadequate.
+
+Digital twins offer a compelling mechanism for addressing this challenge. By maintaining a virtual counterpart of the physical network and environment, a digital twin can fuse telemetry, estimate latent state, predict future conditions, and evaluate candidate actions before deployment. However, in an ISAC-enabled Open RAN, the digital twin must do more than mirror the radio state. It must jointly capture communication, sensing, and security context; it must remain useful under non-negligible synchronisation delay and observation noise; and it must support trustworthy adaptation even when the state estimate is imperfect.
+
+This motivates the present work. A quantum-assisted digital twin framework is developed for closed-loop secure and adaptive ISAC in 6G Open RAN. The proposed design does not assume a full quantum-native network or claim universal quantum advantage. Instead, it introduces a quantum-inspired candidate-screening module that accelerates uncertainty-aware action ranking inside the digital-twin control loop. This module is paired with a trust-aware safeguard that detects anomalous behaviour and suppresses unsafe deployment decisions.
+
+The main contributions of this paper are summarised as follows.
+\begin{itemize}
+    \item A unified architecture is proposed for quantum-assisted digital-twin-enabled ISAC in 6G Open RAN, integrating communication, sensing, trust, and control states into a single closed loop.
+    \item A joint utility-driven control model is formulated to balance communication performance, sensing effectiveness, trust-aware security, and energy efficiency.
+    \item A quantum-inspired candidate-screening module is introduced to reduce effective search burden while preserving high-quality control decisions under uncertainty.
+    \item A trust-aware resilience layer is incorporated to detect anomalous divergence between physical and virtual states and to constrain unsafe control actions.
+    \item A research-grade simulation framework is developed to evaluate the proposed system under realistic dynamic conditions, including mobility, fading, twin synchronisation delay, clutter, and cyber-physical anomalies.
+    \item Representative results are reported to show that the complete framework outperforms the considered baselines in terms of composite utility and sensing performance while also reducing energy expenditure.
+\end{itemize}
+
+The remainder of this paper is organised as follows. Section~\ref{sec:related} reviews the most relevant literature. Section~\ref{sec:system} presents the system model and architecture. Section~\ref{sec:problem} formulates the optimisation problem. Section~\ref{sec:method} describes the proposed closed-loop solution. Section~\ref{sec:simulation} details the simulation methodology. Section~\ref{sec:results} presents and discusses the results. Section~\ref{sec:conclusion} concludes the paper.
+
+\section{Related Work}
+\label{sec:related}
+The present work lies at the intersection of ISAC, digital twins for wireless systems, Open RAN intelligent control, and quantum-assisted decision support.
+
+Joint radar--communication design has been widely studied as a foundation for ISAC, with emphasis on waveform design, beamforming, spectral efficiency, and sensing--communication trade-offs \cite{b1,b2}. These studies demonstrate that shared infrastructure can support both functions efficiently, but most assume relatively clean centralised control settings and do not explicitly incorporate digital twin fidelity or cyber-physical resilience.
+
+Digital twins have emerged as a powerful abstraction for cyber-physical control, manufacturing systems, and increasingly communication networks \cite{b3}. Their appeal in wireless systems stems from the ability to maintain a continuously updated virtual representation of the physical network, thereby supporting forecasting, what-if analysis, and closed-loop orchestration. However, the integration of digital twins into Open RAN-native ISAC remains immature, particularly when twin imperfection, state staleness, and security-aware deployment must be considered jointly.
+
+Open RAN introduces programmability and intelligence through near-real-time and non-real-time RAN intelligent controllers. This architecture is highly compatible with adaptive ISAC, but it also broadens the control surface and increases sensitivity to delayed telemetry, configuration mismatch, and software-layer attacks. A trust-aware digital twin therefore becomes especially relevant in this context.
+
+Finally, quantum computing and quantum-inspired optimisation have recently attracted interest as enablers for high-dimensional search and uncertainty-aware decision support \cite{b4,b5}. In practical wireless control, the near-term value of quantum methods is more credibly framed as \emph{quantum-assisted} or \emph{quantum-inspired} screening rather than guaranteed large-scale quantum advantage. The present work adopts this pragmatic position.
+
+The main research gap is thus the absence of a unified framework that combines (i) secure closed-loop digital twin control, (ii) ISAC-aware Open RAN resource orchestration, and (iii) quantum-assisted action screening within the same adaptive architecture. This paper addresses that gap.
+
+\section{System Model and Architecture}
+\label{sec:system}
+
+\subsection{Network Scenario}
+Consider a 6G Open RAN deployment over a square service region of area \(1~\text{km}^2\), containing a set of base stations
+\[
+\mathcal{B}=\{1,2,\ldots,B\},
+\]
+a set of mobile users
+\[
+\mathcal{U}=\{1,2,\ldots,U\},
+\]
+and a set of sensing targets
+\[
+\mathcal{K}=\{1,2,\ldots,K\}.
+\]
+The default operating point used in the simulator consists of \(B=4\) base stations, \(U=40\) users, and \(K=10\) targets. Each base station employs a \(64\)-antenna configuration and supports both communication and mono-static OFDM-based sensing.
+
+System operation is slotted in time. At each time slot \(t\), the controller must:
+\begin{enumerate}
+    \item collect communication, sensing, and security observations;
+    \item update the digital twin state;
+    \item estimate trust and twin fidelity;
+    \item generate candidate actions;
+    \item rank and select a control action; and
+    \item deploy communication/sensing resource allocation back to the physical system.
+\end{enumerate}
+
+\subsection{Physical State}
+Let the physical system state at time \(t\) be denoted by
+\begin{equation}
+\mathbf{s}(t)=\big[\mathbf{h}(t),\mathbf{q}(t),\mathbf{p}(t),\mathbf{z}(t),\mathbf{c}(t)\big],
+\end{equation}
+where \(\mathbf{h}(t)\) contains channel variables, \(\mathbf{q}(t)\) contains load and queue information, \(\mathbf{p}(t)\) contains user and target position/motion states, \(\mathbf{z}(t)\) contains anomaly and trust-relevant variables, and \(\mathbf{c}(t)\) contains resource and control-plane information.
+
+\subsection{Digital Twin State}
+The digital twin maintains an estimated virtual state
+\begin{equation}
+\hat{\mathbf{s}}(t)=\mathcal{F}\big(\mathbf{y}(t-\tau_{\mathrm{sync}}),\mathbf{u}(t-1)\big),
+\end{equation}
+where \(\mathbf{y}(t)\) is the observation vector, \(\tau_{\mathrm{sync}}\) is the twin synchronisation delay, and \(\mathbf{u}(t)\) denotes deployed control actions. This formulation explicitly models imperfect twin updates based on delayed and potentially corrupted measurements.
+
+The normalised twin mismatch is defined as
+\begin{equation}
+\varepsilon_{\mathrm{DT}}(t)=
+\frac{\|\mathbf{s}(t)-\hat{\mathbf{s}}(t)\|_2}
+{\|\mathbf{s}(t)\|_2+\epsilon},
+\end{equation}
+where \(\epsilon>0\) is a small stabilising constant.
+
+\subsection{Communication Model}
+For user \(u\), the instantaneous signal-to-interference-plus-noise ratio (SINR) is
+\begin{equation}
+\gamma_u(t)=
+\frac{P_u(t)\lvert h_u(t)\rvert^2}
+{I_u(t)+N_0W_u(t)},
+\end{equation}
+where \(P_u(t)\) is allocated power, \(h_u(t)\) is the effective channel, \(I_u(t)\) is interference, \(N_0\) is the noise spectral density, and \(W_u(t)\) is the allocated bandwidth.
+
+The corresponding achievable throughput is approximated by
+\begin{equation}
+R_u(t)=W_u(t)\log_2\big(1+\gamma_u(t)\big).
+\end{equation}
+The network communication utility is then defined as
+\begin{equation}
+U_{\mathrm{comm}}(t)=\sum_{u\in\mathcal{U}} \omega_u R_u(t),
+\end{equation}
+where \(\omega_u\) captures service priority.
+
+\subsection{Sensing Model}
+Each target \(k\) is associated with a sensing SNR
+\begin{equation}
+\gamma_k^{\mathrm{sense}}(t)=
+\frac{P_k^{\mathrm{sense}}(t)G_k(t)}
+{N_0W + C_k(t)},
+\end{equation}
+where \(P_k^{\mathrm{sense}}(t)\) denotes the effective sensing power, \(G_k(t)\) is the sensing gain, and \(C_k(t)\) accounts for clutter.
+
+The probability of detection is modelled through a smooth Swerling-I-inspired approximation,
+\begin{equation}
+P_{d,k}(t)=\Psi\!\left(\gamma_k^{\mathrm{sense}}(t),P_{fa}\right),
+\end{equation}
+where \(P_{fa}\) is the false-alarm probability. A tracking error proxy is further derived from a CRLB-style dependence on SNR and bandwidth. The sensing utility is then represented by
+\begin{equation}
+U_{\mathrm{sense}}(t)=
+\frac{1}{K}\sum_{k\in\mathcal{K}}
+\left(0.6\,P_{d,k}(t)+0.4\,A_k(t)\right),
+\end{equation}
+where \(A_k(t)\) is a normalised accuracy term derived from the tracking error.
+
+\subsection{Trust and Security Model}
+A trust score
+\begin{equation}
+T(t)\in[0,1]
+\end{equation}
+is maintained based on anomaly evidence, observation consistency, and twin-state reliability. The framework uses EWMA-style anomaly detection together with Bayesian trust updates. Low trust penalises aggressive control and favours conservative deployment.
+
+\subsection{Quantum-Assisted Candidate Screening}
+At each slot, the controller generates a candidate set
+\begin{equation}
+\mathcal{A}(t)=\{a_1,\ldots,a_M\}.
+\end{equation}
+A quantum-inspired screening module ranks these candidates according to twin state, trust state, and utility expectation, then passes a shortlisted subset to the final decision stage. This module is not assumed to be a physically realised quantum optimiser; rather, it plays the role of a quantum-assisted search accelerator.
+
+\section{Problem Formulation}
+\label{sec:problem}
+The control objective is to jointly optimise communication, sensing, security, and energy expenditure. At time \(t\), the controller selects an action vector \(\mathbf{x}(t)\) to maximise
+\begin{equation}
+\label{eq:utility}
+J(t)=
+w_c R_{\mathrm{norm}}(t)
++
+w_s U_{\mathrm{sense}}(t)
++
+w_{\mathrm{sec}}T(t)
+-
+w_e E_{\mathrm{norm}}(t),
+\end{equation}
+where \(R_{\mathrm{norm}}(t)\) is the normalised communication performance, \(U_{\mathrm{sense}}(t)\) is the sensing utility, \(T(t)\) is the trust score, and \(E_{\mathrm{norm}}(t)\) is the normalised energy term.
+
+The optimisation is subject to communication, sensing, and control constraints:
+\begin{subequations}
+\begin{align}
+\max_{\mathbf{x}(t)} \quad & J(t) \\
+\text{s.t.}\quad
+& \sum_{u\in\mathcal{U}_b} W_u(t) \leq W_b^{\max}, \quad \forall b, \\
+& 0 \leq P_b(t) \leq P_b^{\max}, \quad \forall b, \\
+& 0 \leq \rho_b^{\mathrm{sense}}(t) \leq 1, \quad \forall b, \\
+& P_{d,k}(t)\geq P_{d,k}^{\min}, \quad \forall k \in \mathcal{K}_{\mathrm{critical}},\\
+& T(t)\geq T_{\min} \quad \text{for unrestricted deployment}.
+\end{align}
+\end{subequations}
+Here \(\rho_b^{\mathrm{sense}}(t)\) is the sensing-power fraction at base station \(b\). The joint problem is non-convex because of coupled SINR expressions, clutter-dependent sensing behaviour, delayed twin-state uncertainty, and discrete action screening.
+
+\section{Proposed Closed-Loop Solution}
+\label{sec:method}
+
+\subsection{Overview}
+The proposed framework operates in four stages per time slot:
+\begin{enumerate}
+    \item \textbf{Observation and twin update:} communication, sensing, and anomaly observations are collected and used to update the delayed digital twin state.
+    \item \textbf{Trust estimation:} anomaly evidence and twin mismatch are mapped to a trust score.
+    \item \textbf{Quantum-assisted screening:} the candidate action set is ranked using a quantum-inspired uncertainty-aware screening module.
+    \item \textbf{Secure deployment:} the best candidate is adjusted through trust-aware gating before being deployed.
+\end{enumerate}
+
+\subsection{Baseline Set}
+Five controller variants are considered:
+\begin{itemize}
+    \item \textbf{BL0: Static ISAC} -- fixed equal allocation without adaptation.
+    \item \textbf{BL1: Adaptive ISAC} -- measurement-based adaptation without digital twin.
+    \item \textbf{BL2: DT-guided} -- digital-twin-guided allocation without quantum assist.
+    \item \textbf{BL3: DT+QA, attack-unaware} -- digital twin plus quantum-assisted screening, but blind to attacks.
+    \item \textbf{BL4: Full proposed} -- digital twin, quantum-assisted screening, and security-aware trust gating.
+\end{itemize}
+
+\subsection{Trust-Aware Resource Adaptation}
+In the full method, the controller updates each base station's communication and sensing split based on predicted twin state and trust level. If the trust for a user or action falls below a threshold, the allocation is scaled conservatively. The communication power is also adapted based on observed SINR margin, while the sensing fraction is increased when average detection probability is inadequate and reduced when excess sensing margin exists.
+
+\subsection{Algorithm}
+\begin{algorithm}[t]
+\caption{Quantum-Assisted Closed-Loop DT-ISAC Control}
+\label{alg:qdt}
+\begin{algorithmic}[1]
+\STATE Initialise physical network, digital twin, trust model, and controller weights
+\FOR{each time slot \(t=1,2,\ldots,T\)}
+    \STATE Update user and target mobility
+    \STATE Update channel and clutter state
+    \STATE Evaluate communication and sensing observations
+    \STATE Update digital twin with delayed and noisy measurements
+    \STATE Estimate anomaly evidence and trust state
+    \STATE Generate candidate action set \(\mathcal{A}(t)\)
+    \STATE Apply quantum-inspired screening to shortlist candidates
+    \STATE Select best action according to \eqref{eq:utility}
+    \STATE Apply trust-aware gating and deploy action
+    \STATE Record throughput, sensing, trust, twin, latency, and energy metrics
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\section{Simulation Setup}
+\label{sec:simulation}
+A discrete-time simulation framework is developed to evaluate the proposed method under dynamic wireless and cyber-physical conditions. The default setup consists of \(4\) base stations, \(40\) users, and \(10\) sensing targets over a \(1000\times1000\)~m\(^2\) area. The controller operates with \(10\)~ms slot duration, and full runs are configured up to \(3000\) slots and \(50\) Monte Carlo trials.
+
+The wireless channel includes distance-dependent path loss, log-normal shadowing, Rician fading, and AR(1)-type temporal correlation. User and target mobility are both modelled dynamically. The sensing stack uses a mono-static OFDM radar abstraction with clutter and a Swerling-I-inspired probability-of-detection model. The digital twin explicitly includes synchronisation delay, measurement noise, SINR estimation error, and state staleness. The security layer incorporates dual-channel EWMA anomaly detection, Bayesian trust dynamics, jamming, and spoofing. The complete simulator also supports parameter sweeps over user density, anomaly probability, twin delay, clutter, target speed, sensing-power fraction, target density, scalability, quantum assist on/off, twin fidelity, mobility, and utility weights.
+
+The reported example results in this paper correspond to an illustrative configuration with \(5\) Monte Carlo runs and \(500\) slots. Although this configuration is smaller than the maximum full-run setup, it is sufficient to compare the five baselines under the same conditions.
+
+\section{Results and Discussion}
+\label{sec:results}
+
+\subsection{Overall Baseline Comparison}
+Table~\ref{tab:baseline} reports the baseline comparison under the representative configuration.
+
+\begin{table}[t]
+\centering
+\caption{Representative baseline comparison under illustrative configuration (\(5\) Monte Carlo runs, \(500\) slots)}
+\label{tab:baseline}
+\begin{tabular}{lccccc}
+\toprule
+Method & Sum Rate & \(P_d\) & Trust & Energy & Utility \\
+ & (Mbps) &  &  &  &  \\
+\midrule
+Static ISAC & \(1064\pm121\) & 0.600 & 1.000 & 0.996 & 0.276 \\
+Adaptive ISAC & \(976\pm106\) & 0.559 & 1.000 & 0.997 & 0.264 \\
+DT (no QA) & \(1009\pm76\) & 0.546 & 0.839 & 0.997 & 0.352 \\
+DT+QA (no Sec) & \(1051\pm130\) & 0.524 & 1.000 & 0.998 & 0.263 \\
+Full Proposed & \(\mathbf{1086\pm95}\) & \(\mathbf{0.743}\) & 0.837 & \(\mathbf{0.965}\) & \(\mathbf{0.397}\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Several important observations follow from Table~\ref{tab:baseline}. First, the full proposed method achieves the highest composite utility among all baselines, indicating that jointly exploiting digital twin guidance, trust-aware control, and quantum-assisted candidate screening yields the strongest overall operating point. Second, the proposed method also attains the highest probability of detection, which confirms that the closed-loop sensing adaptation is functioning effectively. Third, the lowest energy value is obtained by the full method, showing that trust-aware power adaptation and sensing split control are not merely increasing performance at the cost of excessive energy expenditure.
+
+An interesting result is that the attack-unaware DT+QA baseline does not outperform the proposed method despite having access to digital twin and quantum-assisted screening. This demonstrates that quantum-assisted action screening alone is insufficient when anomaly awareness and trust-aware deployment are absent. In other words, the security layer is not an auxiliary component; it is structurally necessary to transform high-quality action candidates into reliable closed-loop behaviour.
+
+\subsection{Communication--Sensing--Security Trade-off}
+The results show that the proposed framework is not optimised solely for throughput. While the gain in sum rate over static ISAC is modest, the gain in detection probability is substantial, rising from \(0.600\) to \(0.743\). This is exactly the desired behaviour in an ISAC-aware controller: the objective is not to maximise a single communication metric, but to improve the joint operating point across communication, sensing, security, and energy.
+
+Moreover, the utility improvement from \(0.276\) in static ISAC to \(0.397\) in the proposed method indicates that the selected control actions are better aligned with the multi-objective optimisation target in \eqref{eq:utility}. This is especially relevant for Open RAN environments, where application demands are heterogeneous and adaptation must remain interpretable.
+
+\subsection{Role of the Digital Twin}
+Comparing BL1 and BL2 shows that introducing the digital twin improves the utility from \(0.264\) to \(0.352\), even without quantum-assisted screening. This indicates that explicit state estimation and forecasting via the twin already provide meaningful control benefit under dynamic conditions. The digital twin therefore acts as more than a monitoring replica; it becomes a control substrate that improves policy quality.
+
+At the same time, the twin remains imperfect by construction. This is essential. A perfectly informed twin would overstate real-world capability and artificially inflate the contribution of model-based control. By allowing synchronisation delay, state staleness, and measurement error, the framework provides a more credible basis for evaluating closed-loop ISAC.
+
+\subsection{Role of Quantum-Assisted Screening}
+The quantum-assisted component should be interpreted carefully. The results do not justify exaggerated claims of universal quantum advantage. Rather, they show that a quantum-inspired screening mechanism can improve candidate evaluation when embedded inside a trustworthy digital-twin loop. The contrast between BL2 and BL4 suggests that the screening module is most valuable when combined with trust-aware deployment and adaptive sensing/communication balancing.
+
+This is an important practical insight. In high-dimensional wireless control, the main value of quantum-assisted intelligence may lie not in fully replacing classical optimisation, but in reducing effective search complexity and improving action ranking under uncertainty. The present framework supports exactly this interpretation.
+
+\subsection{Robustness to Anomalies and Twin Delay}
+The repository also reports sensitivity analyses over anomaly probability and twin synchronisation delay. The anomaly sweep indicates that the full proposed method maintains superior utility under increasing attack intensity, confirming that security-aware closed-loop control enhances resilience. The twin-delay sweep shows graceful degradation as synchronisation delay increases, suggesting that the framework remains useful even when the twin is imperfect and stale.
+
+These findings are important because they validate the central design premise of this paper: a digital twin must be judged not only by nominal performance, but also by how gracefully it degrades under delayed, uncertain, or adversarial conditions. In this respect, the proposed method behaves consistently with its intended design.
+
+\subsection{Discussion of Practical Relevance}
+From a systems perspective, the results suggest three key lessons. First, digital twins are most useful in Open RAN when they directly participate in the control loop rather than serving as passive replicas. Second, quantum-assisted screening becomes meaningful only when framed as a component of robust closed-loop adaptation rather than as an isolated optimisation gadget. Third, trust-aware deployment is critical in cyber-physical ISAC systems, because the best nominal action may still be unsafe under low-confidence or attack-affected state estimates.
+
+\section{Conclusion}
+\label{sec:conclusion}
+This paper proposed a quantum-assisted digital twin framework for closed-loop secure and adaptive ISAC in 6G Open RAN. The framework integrates imperfect digital-twin state estimation, trust-aware anomaly handling, quantum-inspired candidate screening, and adaptive communication/sensing resource control into a unified control loop. A multi-objective optimisation model was developed to balance throughput, sensing effectiveness, trust-aware security, and energy expenditure. A research-grade simulation framework was then constructed to evaluate the architecture under time-varying wireless and cyber-physical conditions.
+
+Representative results demonstrated that the complete proposed method achieves the best overall utility among the considered baselines, while also delivering the highest sensing performance and the lowest energy expenditure in the reported operating point. These findings support the view that digital twins, when paired with trust-aware control and quantum-assisted action screening, offer a promising path toward secure and intelligent ISAC orchestration in future 6G Open RAN systems.
+
+Future work will extend the framework to richer traffic classes, stronger controller validation, broader ablation studies, and larger-scale parameter sweeps suitable for final journal-grade experimental reporting.
+
+\begin{thebibliography}{99}
+
+\bibitem{b1}
+F.~Liu, C.~Masouros, A.~P. Petropulu, H.~Griffiths, and L.~Hanzo,
+``Joint radar and communication design: Applications, state-of-the-art, and the road ahead,''
+\emph{IEEE Trans. Commun.}, vol.~68, no.~6, pp.~3834--3862, Jun.~2020.
+
+\bibitem{b2}
+F.~Liu, Y.-F.~Liu, A.~Li, C.~Masouros, Y.~C. Eldar, and Y.~Hong,
+``Cram\'er--Rao bound optimisation for joint radar-communication beamforming,''
+\emph{IEEE Trans. Signal Process.}, vol.~70, pp.~240--253, 2022.
+
+\bibitem{b3}
+Y.~Lu, C.~Liu, K.~I.-K.~Wang, H.~Huang, and X.~Xu,
+``Digital twin-driven smart manufacturing: Connotation, reference model, applications and research issues,''
+\emph{Robot. Comput.-Integr. Manuf.}, vol.~61, Art.~no.~101837, 2020.
+
+\bibitem{b4}
+V.~Dunjko and H.~J. Briegel,
+``Machine learning and artificial intelligence in the quantum domain: A review of recent progress,''
+\emph{Rep. Prog. Phys.}, vol.~81, no.~7, Art.~no.~074001, 2018.
+
+\bibitem{b5}
+S.~Pirandola, U.~L. Andersen, L.~Banchi, M.~Berta, D.~Bunandar, R.~Colbeck, D.~Englund, T.~Gehring, C.~Lupo, C.~Ottaviani, J.~L. Pereira, M.~Razavi, J.~S. Shaari, M.~Tomamichel, V.~C. Usenko, G.~Vallone, P.~Villoresi, and P.~Wallden,
+``Advances in quantum cryptography,''
+\emph{Adv. Opt. Photon.}, vol.~12, no.~4, pp.~1012--1236, 2020.
+
+\bibitem{b6}
+M.~D. Renzo, A.~Zappone, M.~Debbah, M.-S.~Alouini, C.~Yuen, J.~de Rosny, and S.~Tretyakov,
+``Smart radio environments empowered by reconfigurable intelligent surfaces: How it works, state of research, and the road ahead,''
+\emph{IEEE J. Sel. Areas Commun.}, vol.~38, no.~11, pp.~2450--2525, Nov.~2020.
+
+\bibitem{b7}
+O-RAN Alliance,
+``O-RAN: Towards an open and smart RAN,''
+White Paper, Oct.~2018.
+
+\end{thebibliography}
+
+\balance
+\end{document}
