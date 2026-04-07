@@ -27,6 +27,37 @@
   <img src="figures/architecture.png" width="850"/>
 </p>
 
+
+### Digital Twin Module
+
+<p align="center">
+  <img src="figures/digital_twin_module.png" width="850"/>
+</p>
+
+### Quantum-Assisted Engine
+
+<p align="center">
+  <img src="figures/quantum_engine.png" width="850"/>
+</p>
+
+### Security Module
+
+<p align="center">
+  <img src="figures/security_module.png" width="850"/>
+</p>
+
+### Closed-Loop Control Flow
+
+<p align="center">
+  <img src="figures/control_loop.png" width="850"/>
+</p>
+
+### ISAC Signal Model
+
+<p align="center">
+  <img src="figures/isac_signal_model.png" width="850"/>
+</p>
+
 ---
 
 ## ✨ Key Features
