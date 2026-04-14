@@ -25,8 +25,8 @@ plt.rcParams.update({
     'legend.fontsize': 9,
     'legend.framealpha': 0.9,
     'legend.edgecolor': '#cccccc',
-    'figure.dpi': 300,
-    'savefig.dpi': 300,
+    'figure.dpi': 600,
+    'savefig.dpi': 600,
     'savefig.bbox': 'tight',
     'savefig.pad_inches': 0.08,
     'axes.grid': True,
@@ -68,7 +68,7 @@ def plot_bars(sdf: pd.DataFrame, d: str):
     ]
     bls = sorted(sdf['baseline_id'].unique())
     n_metrics = len(metrics)
-    fig, axes = plt.subplots(1, n_metrics, figsize=(22, 4.5))
+    fig, axes = plt.subplots(1, n_metrics, figsize=(24, 5))
 
     for i, (col, lab) in enumerate(metrics):
         ax = axes[i]
@@ -119,7 +119,7 @@ def plot_time(sdf: pd.DataFrame, d: str, bl: int = 4):
         ('trust', 'Trust Score'),
         ('utility', 'Overall Utility $J$'),
     ]
-    fig, axes = plt.subplots(2, 3, figsize=(16, 9))
+    fig, axes = plt.subplots(2, 3, figsize=(18, 10))
     color = CL.get(bl, '#1f77b4')
 
     for i, (col, lab) in enumerate(metrics):
@@ -145,7 +145,7 @@ def plot_time(sdf: pd.DataFrame, d: str, bl: int = 4):
 def plot_cdf(slots_dict: Dict[str, pd.DataFrame], metric: str,
              xlabel: str, d: str):
     """CDF across baselines with proper styling."""
-    fig, ax = plt.subplots(figsize=(7, 5))
+    fig, ax = plt.subplots(figsize=(8, 6))
 
     for bl_s, df in sorted(slots_dict.items(), key=lambda x: int(x[0])):
         bl = int(bl_s)
@@ -172,7 +172,7 @@ def plot_cdf(slots_dict: Dict[str, pd.DataFrame], metric: str,
 
 def plot_sweep(name, vals, bl_data: Dict, metric, ylabel, d):
     """Parameter sweep with error bars."""
-    fig, ax = plt.subplots(figsize=(7, 5))
+    fig, ax = plt.subplots(figsize=(8, 6))
 
     for bl_s, sdf in sorted(bl_data.items(), key=lambda x: int(x[0])):
         bl = int(bl_s)
@@ -206,7 +206,7 @@ def plot_ablation(ablation_df: pd.DataFrame, d: str):
     """Ablation study horizontal bar chart."""
     if 'ablation' not in ablation_df.columns:
         return
-    fig, ax = plt.subplots(figsize=(9, 5))
+    fig, ax = plt.subplots(figsize=(10, 6))
     names = ablation_df.groupby('ablation')['utility_mean'].mean()
     names = names.sort_values(ascending=True)
 
@@ -231,7 +231,7 @@ def plot_ablation(ablation_df: pd.DataFrame, d: str):
 
 def plot_degradation_curve(delays, losses, d: str):
     """Utility degradation vs twin delay (formal bound)."""
-    fig, ax = plt.subplots(figsize=(7, 5))
+    fig, ax = plt.subplots(figsize=(8, 6))
     ax.plot(delays, losses, 'o-', color='#E74C3C', lw=2.0,
             markersize=5, markerfacecolor='white', markeredgewidth=1.5)
     ax.fill_between(delays, 0, losses, alpha=0.08, color='#E74C3C')
