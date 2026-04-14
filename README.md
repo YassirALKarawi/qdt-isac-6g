@@ -6,197 +6,181 @@
   <a href="https://github.com/YassirALKarawi/qdt-isac-6g/actions/workflows/ci.yml"><img src="https://github.com/YassirALKarawi/qdt-isac-6g/actions/workflows/ci.yml/badge.svg" alt="CI"/></a>
   <a href="#-quick-start"><img src="https://img.shields.io/badge/python-3.9+-3776AB.svg?style=flat-square&logo=python&logoColor=white" alt="Python"/></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="MIT"/></a>
-  <a href="#-example-results"><img src="https://img.shields.io/badge/status-Research_Prototype-orange.svg?style=flat-square" alt="Status"/></a>
-  <a href="https://github.com/YassirALKarawi/qdt-isac-6g/stargazers"><img src="https://img.shields.io/github/stars/YassirALKarawi/qdt-isac-6g?style=flat-square&color=yellow" alt="Stars"/></a>
+  <a href="#"><img src="https://img.shields.io/badge/status-Publication--Oriented-blue.svg?style=flat-square" alt="Status"/></a>
 </p>
 
 <p align="center">
-  A publication-oriented discrete-time simulation framework for evaluating
-  <b>quantum-assisted / quantum-inspired digital twin</b> control architectures in
-  <b>Integrated Sensing and Communication (ISAC)</b> systems for <b>6G Open RAN</b> networks.
-  <br/>
-  <sub>Designed for comparative algorithmic evaluation, reproducible experiments, and research prototyping.
-  Not intended to represent a full standards-compliant physical-layer or deployment-grade Open RAN stack.</sub>
+  <b>Trust-Aware Quantum-Assisted Digital Twin Control for Secure Adaptive ISAC in 6G Open RAN</b><br/>
+  A publication-oriented simulation framework accompanying an IEEE JSAC Special Issue submission.
 </p>
 
 ---
 
-## 🏛️ Architecture
+## 1. What This Repository Is
 
-<p align="center">
-  <img src="figures/architecture.png" width="850"/>
-</p>
+This repository is **not** a generic ISAC prototype. It is a **publication-grade
+experimental platform** designed to support a single, focused scientific
+contribution:
 
+> **Trust-aware closed-loop digital-twin control for secure and adaptive
+> ISAC in 6G Open RAN, with quantum-inspired candidate screening used as a
+> supporting mechanism for uncertainty-aware action ranking and search-cost
+> reduction** — *not* as a claim of universal quantum advantage.
 
-### Digital Twin Module
+Five claims anchor the simulation campaign. Every experiment family in the
+platform was designed to probe at least one of them:
 
-<p align="center">
-  <img src="figures/digital_twin_module.png" width="850"/>
-</p>
-
-### Quantum-Assisted Engine
-
-<p align="center">
-  <img src="figures/quantum_engine.png" width="850"/>
-</p>
-
-### Security Module
-
-<p align="center">
-  <img src="figures/security_module.png" width="850"/>
-</p>
-
-### Closed-Loop Control Flow
-
-<p align="center">
-  <img src="figures/control_loop.png" width="850"/>
-</p>
-
-### ISAC Signal Model
-
-<p align="center">
-  <img src="figures/isac_signal_model.png" width="850"/>
-</p>
+| # | Claim | Primary experiment family |
+|---|-------|---------------------------|
+| 1 | Digital-twin guidance adds measurable value beyond reactive control | `baseline`, `ablation` |
+| 2 | Trust-aware deployment is essential under anomaly or twin mismatch | `anomaly`, `twin_delay` |
+| 3 | Quantum-assisted screening reduces effective search burden / improves action quality under uncertainty | `ablation`, `scalability`, `runtime` |
+| 4 | The framework degrades gracefully under stale-twin and cyber-physical conditions | `twin_delay`, `anomaly` |
+| 5 | Gains do not come at unreasonable energy or runtime cost | `baseline`, `runtime` |
 
 ---
 
-## ✨ Key Features
+## 2. Experiment Families
 
-| Module | Description |
-|:-------|:-----------|
-| **6G Open RAN** | 4 BS × 64 antennas, 40 UE, 10 sensing targets, 1 km² area |
-| **Channel** | 3GPP path loss, log-normal shadowing, Rician fading, AR(1) temporal correlation |
-| **Communication** | OFDMA downlink, per-RB SINR, Shannon throughput, outage detection |
-| **Sensing** | Mono-static OFDM radar, Swerling-I P_d, CRLB range estimation, clutter |
-| **Digital Twin** | Imperfect: sync delay, measurement noise, SINR estimation error, state staleness |
-| **Security** | EWMA anomaly detection (dual-channel), Bayesian trust dynamics, jamming + spoofing |
-| **Quantum Assist** | Quantum-inspired candidate screening for uncertainty-aware action ranking |
-| **Controller** | Closed-loop adaptive: per-BS power control, sensing/comm split, trust gating |
-| **Evaluation** | 50 Monte Carlo runs, 3000 slots, 12+ parameter sweeps, 95% CI |
+The simulator is organised as **six independent experiment families**, each
+with its own runner, configuration profile, output directory and metadata:
 
----
+| Family | Runner | Profile | Output directory |
+|--------|--------|---------|------------------|
+| **Baseline comparison** | `run_baseline_experiment()` | `profile_baseline` | `results/baseline/` |
+| **Ablation** | `run_ablation_experiment()` | `profile_ablation` | `results/ablation/` |
+| **Anomaly robustness** | `run_anomaly_sweep()` | `profile_anomaly` | `results/anomaly/` |
+| **Twin imperfection** | `run_twin_delay_sweep()` | `profile_twin_delay` | `results/twin_delay/` |
+| **Scalability** | `run_scalability_experiment()` | `profile_scalability` | `results/scalability/` |
+| **Runtime / complexity** | `run_runtime_experiment()` | `profile_runtime` | `results/runtime/` |
 
-## ⚠️ Current Limitations
+Every experiment directory always contains:
 
-This framework is intentionally abstraction-driven and should be interpreted as a research simulation platform rather than a full deployment stack.
-
-- The quantum module is **quantum-inspired / quantum-assisted** at the algorithmic level, not a hardware-backed quantum optimisation engine
-- The sensing model is simplified and intended for comparative ISAC evaluation
-- The interference and scheduling models are abstracted for tractability
-- Security metrics are scenario-driven and should be interpreted as resilience indicators rather than full intrusion-detection benchmarks
-
----
-
-## 📊 Results
-
-### Multi-Objective Performance
-
-<p align="center">
-  <img src="figures/radar_comparison.png" width="550"/>
-</p>
-
-The Full Proposed method achieves the best overall trade-off across communication, sensing, security, and energy efficiency.
-
-### Example Results (illustrative configuration: 5 MC × 500 slots)
-
-<p align="center">
-  <img src="figures/baseline_bars.png" width="850"/>
-</p>
-
-| Method | Sum Rate (Mbps) | P_d | Trust | Energy | Utility |
-|:-------|:-:|:-:|:-:|:-:|:-:|
-| Static ISAC | 1064 ± 121 | 0.600 | 1.000 | 0.996 | 0.276 |
-| Adaptive ISAC | 976 ± 106 | 0.559 | 1.000 | 0.997 | 0.264 |
-| DT (no QA) | 1009 ± 76 | 0.546 | 0.839 | 0.997 | 0.352 |
-| DT+QA (no Sec) | 1051 ± 130 | 0.524 | 1.000 | 0.998 | 0.263 |
-| **Full Proposed** | **1086 ± 95** | **0.743** | 0.837 | **0.965** | **0.397** |
-
-### Time Evolution — Full Proposed Method
-
-<p align="center">
-  <img src="figures/time_evolution.png" width="850"/>
-</p>
-
-### Cumulative Distribution Functions
-
-<p align="center">
-  <img src="figures/cdf_all.png" width="850"/>
-</p>
-
----
-
-## 🔬 Sensitivity Analysis
-
-### Attack Intensity Sweep
-
-<p align="center">
-  <img src="figures/sweep_anomaly.png" width="850"/>
-</p>
-
-The Full Proposed method maintains superior utility under increasing anomaly probability, demonstrating the value of security-aware closed-loop control.
-
-### Digital Twin Delay Sweep
-
-<p align="center">
-  <img src="figures/sweep_twin_delay.png" width="850"/>
-</p>
-
-Performance degrades gracefully as twin synchronisation delay increases, validating the framework's robustness to imperfect state information.
-
----
-
-## 🏗️ Baselines
-
-| ID | Method | Digital Twin | Quantum Assist | Security | Description |
-|:--:|:-------|:--:|:--:|:--:|:-----------|
-| 0 | Static ISAC | ✗ | ✗ | ✗ | Fixed equal allocation, no adaptation |
-| 1 | Adaptive ISAC | ✗ | ✗ | ✗ | Measurement-based rebalancing |
-| 2 | DT-guided | ✓ | ✗ | ✓ | Twin-predicted PF allocation |
-| 3 | DT+QA (attack-unaware) | ✓ | ✓ | ✗ | Quantum search, blind to attacks |
-| 4 | **Full Proposed** | ✓ | ✓ | ✓ | Complete closed-loop system |
-
----
-
-## 🚀 Quick Start
-
-```bash
-# Clone
-git clone https://github.com/YassirALKarawi/qdt-isac-6g.git
-cd qdt-isac-6g
-
-# Install
-pip install -r requirements.txt
-
-# Quick test (3 MC, 300 slots)
-python main.py --quick
-
-# Full run (50 MC, 3000 slots)
-python main.py --mc 50 --slots 3000
-
-# Single baseline
-python main.py --baseline 4 --mc 10 --slots 1000
-
-# Parameter sweep
-python main.py --sweep anomaly_prob
-python main.py --sweep twin_delay
-python main.py --sweep clutter
+```
+summary.csv     # MC-averaged run-level summaries (mean, std, 95% CI)
+slots.csv       # slot-level telemetry for every run
+metadata.json   # scenario, baseline ID, sweep variable, seed,
+                # n_monte_carlo, ablation flags, full config
 ```
 
 ---
 
-## 🔄 Reproducibility
+## 3. Baselines
 
-- **Python version:** 3.9+
-- **Seed-controlled** execution via `SimConfig(seed=...)`
-- **Monte Carlo averaging** supported via `--mc`
-- **Steady-state aggregation** computed over the latter 50% of the simulated time horizon
-- **Slot-level and run-level** results exported to CSV under `results/`
-- **Figures** saved under `figures/`
-- **Tests:** `python -m pytest tests/ -v`
+The baseline set has been deliberately widened so that the proposed method is
+evaluated against **stronger algorithmic alternatives**, not just weak internal
+controls.
+
+| ID | Baseline | Role |
+|----|----------|------|
+| 0 | Static ISAC | Fixed equal allocation — lower bound |
+| 1 | Reactive Adaptive ISAC | Measurement-driven rebalancing |
+| 2 | DT-guided (no QA) | Digital-twin-predicted allocation without screening |
+| 3 | DT + QA, attack-unaware | Twin + screening without security awareness |
+| 4 | **Full Proposed** | Trust-aware DT + QA screening + adaptive weights |
+| 5 | Predictor-based uncertainty-aware | EWMA SINR predictor with conservative margin — *no DT* |
+| 6 | Robust min-max heuristic | Worst-user protection — *no DT, no QA* |
+| 7 | Learning-based bandit (ε-greedy) | Simple online learner over action arms |
+
+Baseline `-1` (*ablation mode*) drives behaviour from five independent flags:
+`use_twin`, `use_trust_gating`, `use_screening`, `use_adaptive_weights`,
+`use_mismatch_comp`. The ablation campaign enumerates:
+
+```
+no_dt · dt_only · dt_trust · dt_screening · dt_trust_screening · full
+```
 
 ---
 
-## 📐 Composite Utility
+## 4. Metrics
+
+Every numeric metric is reported with **mean, standard deviation, and 95%
+confidence interval**, aggregated over a well-defined steady-state window
+(`steady_state_fraction`, recorded in each summary row as
+`steady_state_start_slot`).
+
+**Twin**: `twin_mismatch_mean`, `twin_mismatch_std`, `twin_fidelity`,
+`stale_state_penalty`, `twin_conf`.
+
+**Security / trust-aware deployment**: `fallback_deployment_ratio`,
+`unsafe_action_suppression_rate`, `trust_degradation_rate`,
+`anomaly_containment_score`, `safe_control_persistence`.
+
+**Quantum-inspired screening**: `candidate_reduction_ratio`,
+`search_cost_reduction`, `selected_action_rank_percentile`,
+`screening_overhead_ms`.
+
+**Derived**: `energy_utility_tradeoff`, `adaptation_gain`, `robustness_gain`.
+
+---
+
+## 5. Interpretation of the Quantum-Assisted Component
+
+This is important and is deliberately conservative:
+
+- The `quantum_assist.py` module is a **quantum-inspired candidate screening
+  and action-ranking layer**.
+- It is **not** a hardware-backed quantum optimiser and makes **no claim of
+  universal quantum advantage**.
+- Its purpose in this framework is to (i) reduce the number of expensive full
+  candidate evaluations via a fast surrogate shortlist, (ii) expose a
+  Grover-style amplification model with explicit decoherence / gate-fidelity
+  penalties, and (iii) produce an uncertainty-aware action ranking inside the
+  trust-aware twin-in-the-loop controller.
+- Its value is demonstrated only through measurable screening metrics
+  (`candidate_reduction_ratio`, `search_cost_reduction`, `rank_percentile`,
+  `screening_overhead_ms`).
+
+---
+
+## 6. Quick Start
+
+```bash
+git clone https://github.com/YassirALKarawi/qdt-isac-6g.git
+cd qdt-isac-6g
+pip install -r requirements.txt
+
+# Smoke test (tiny MC × few slots)
+python main.py --family baseline --quick
+
+# Run every experiment family with default profiles
+python main.py --all
+
+# Individual families
+python main.py --family baseline
+python main.py --family ablation
+python main.py --family anomaly
+python main.py --family twin_delay
+python main.py --family scalability
+python main.py --family runtime
+
+# Ad-hoc single-baseline run
+python main.py --baseline 4 --mc 10 --slots 1000
+```
+
+All experiment output is written under `--output` (default `results/`) in
+the family sub-directories described above.
+
+---
+
+## 7. Reproducibility Workflow
+
+- **Python:** 3.9+
+- **Deterministic seeds:** `SimConfig(seed=...)`; each MC run uses
+  `seed + run_id * 997` to decorrelate while remaining reproducible.
+- **Monte Carlo:** `n_monte_carlo` per baseline, aggregated with 95% CI.
+- **Steady-state aggregation:** latter `steady_state_fraction` of the time
+  horizon, with the exact start slot stored per-run.
+- **Metadata:** each experiment directory has a `metadata.json` recording
+  scenario, baseline ID, sweep variable, seed, number of MC runs, the full
+  configuration dict, and ablation flags.
+- **Tests:** `python -m pytest tests/ -v` covers scientific behaviours
+  (sensing power → Pd, twin delay → mismatch, trust drop → conservative
+  gating, screening → fewer evaluations).
+
+---
+
+## 8. Composite Utility
 
 $$J = w_c \cdot R_{\text{norm}} + w_s \cdot S + w_{\text{sec}} \cdot T - w_e \cdot E_{\text{norm}}$$
 
@@ -204,71 +188,90 @@ $$J = w_c \cdot R_{\text{norm}} + w_s \cdot S + w_{\text{sec}} \cdot T - w_e \cd
 |:------:|:----------|:------|
 | $R_{\text{norm}}$ | Normalised sum-rate | `communication.py` |
 | $S$ | Sensing utility (P_d + tracking) | `sensing.py` |
-| $T$ | Trust score (Bayesian adaptive) | `security.py` |
-| $E_{\text{norm}}$ | Energy consumption (PA + DSP + circuit) | `network.py` |
+| $T$ | Trust score (EWMA) | `security.py` |
+| $E_{\text{norm}}$ | Energy (PA + DSP + circuit + sensing compute) | `network.py` |
 
-Weights adapt online via the closed-loop controller based on observed outage, detection, and trust levels.
+Weights adapt online in `controller._adapt()` based on observed outage,
+detection, and trust levels.
 
 ---
 
-<details>
-<summary><h2>📁 Project Structure</h2></summary>
+## 9. Project Layout
 
 ```
 qdt-isac-6g/
-├── config.py            # Simulation parameters + 12 sweep configs
-├── channel.py           # Path loss, shadowing, Rician fading, AR(1)
-├── network.py           # BS, UE, targets + mobility + energy model
-├── communication.py     # SINR, throughput, outage (OFDMA)
-├── sensing.py           # Radar SNR, Swerling-I P_d, CRLB
-├── digital_twin.py      # Imperfect DT: delay, noise, staleness
-├── security.py          # EWMA detection + Bayesian trust
-├── quantum_assist.py    # Quantum-inspired candidate search
-├── controller.py        # 5 baseline controllers
-├── simulator.py         # Discrete-time simulation engine
-├── metrics.py           # CSV/JSON metrics export + CI95
-├── plotting.py          # Publication-quality figures
-├── main.py              # CLI entry point
-├── tests/               # Verification tests (pytest)
-├── figures/             # Generated plots
-├── results/             # Output CSV/JSON
-├── requirements.txt
-├── requirements-dev.txt
-└── LICENSE
+├── config.py               # SimConfig, profiles, sweeps, scenarios, regimes
+├── channel.py              # Path loss + shadowing + Rician fading + AR(1)
+├── network.py              # BS / UE / sensing target entities + mobility + energy
+├── communication.py        # OFDMA SINR, throughput, outage
+├── sensing.py              # Mono-static OFDM radar (Swerling-I P_d, CRLB)
+├── digital_twin.py         # Imperfect DT (delay, noise, staleness, fidelity)
+├── security.py             # Anomaly injection, EWMA detection, trust gating
+├── quantum_assist.py       # Quantum-inspired candidate screening
+├── controller.py           # 8 baselines + ablation mode
+├── simulator.py            # Closed-loop simulation engine
+├── metrics.py              # MC-level aggregation (mean, std, 95% CI)
+├── plotting.py             # Publication-quality figures (PNG + PDF)
+├── main.py                 # CLI entry point
+├── experiments/            # Experiment runners (six families)
+│   ├── baseline.py
+│   ├── ablation.py
+│   ├── anomaly.py
+│   ├── twin_delay.py
+│   ├── scalability.py
+│   ├── runtime.py
+│   └── common.py
+├── tests/                  # Scientific-behaviour + unit tests (pytest)
+├── figures/                # Legacy / generated plots
+├── results/                # Output CSV + metadata per experiment family
+└── paper/                  # Companion manuscript
 ```
 
-</details>
+---
+
+## 10. Figures (Publication-Grade)
+
+Each experiment runner triggers a corresponding plotting hook. Every figure
+is saved as **both PNG and PDF** with consistent labelling and sizing.
+
+| Figure | Path |
+|--------|------|
+| Baseline bar chart (95% CI) | `results/baseline/figures/baseline_comparison.{png,pdf}` |
+| Multi-objective radar | `results/baseline/figures/radar_multiobjective.{png,pdf}` |
+| Trust trajectory | `results/baseline/figures/trust_trajectory.{png,pdf}` |
+| Twin mismatch trajectory | `results/baseline/figures/twin_mismatch_trajectory.{png,pdf}` |
+| Energy–utility trade-off | `results/baseline/figures/energy_utility_tradeoff.{png,pdf}` |
+| Utility vs anomaly prob. | `results/anomaly/figures/sweep_anomaly_prob_utility.{png,pdf}` |
+| Utility vs twin delay | `results/twin_delay/figures/utility_vs_twin_delay.{png,pdf}` |
+| Pd vs twin fidelity | `results/twin_delay/figures/pd_vs_twin_fidelity.{png,pdf}` |
+| Scalability plots | `results/scalability/figures/scalability_*.{png,pdf}` |
+| Ablation summary | `results/ablation/figures/ablation_summary.{png,pdf}` |
+| Search-cost vs shortlist ratio | `results/runtime/figures/search_cost_vs_shortlist.{png,pdf}` |
+| Runtime vs candidate-set size | `results/runtime/figures/runtime_vs_candidates.{png,pdf}` |
 
 ---
 
-<details>
-<summary><h2>🔧 Available Sweeps (12 experiments)</h2></summary>
+## 11. Limitations
 
-| Sweep | Parameter | Values |
-|:------|:----------|:-------|
-| `user_density` | n_users | 10, 20, 40, 60, 80 |
-| `anomaly_prob` | anomaly_prob | 0.0 – 0.20 |
-| `twin_delay` | twin_sync_delay_slots | 0 – 50 |
-| `clutter` | clutter_to_noise_ratio_db | 0 – 15 dB |
-| `target_speed` | target_speed_range | 1 – 100 m/s |
-| `sensing_power` | sensing_power_fraction | 0.05 – 0.40 |
-| `target_density` | n_targets | 2 – 40 |
-| `scalability` | n_bs | 2 – 16 |
-| `quantum_onoff` | qa_enabled | True / False |
-| `twin_fidelity` | twin_sinr_noise_std | 0.5 – 10 dB |
-| `mobility` | user_speed_range | pedestrian – vehicular |
-| `weight_sweep` | weight_comm | 0.1 – 0.7 |
+This platform is a research simulator, not a deployment stack:
 
-</details>
+- Quantum component is quantum-*inspired* (see §5), not hardware-backed.
+- PHY / scheduling / channel models are abstracted for tractability and
+  are sufficient for comparative algorithmic evaluation but not for
+  standards-compliant link-level validation.
+- Security metrics are scenario-driven robustness indicators, not
+  intrusion-detection benchmarks against CVE-backed adversaries.
+- The ISAC model uses mono-static OFDM radar with a Swerling-I approximation
+  and a CRLB-style tracking proxy.
 
 ---
 
-## 📖 Citation
+## 12. Citation
 
 ```bibtex
 @article{alkarawi2026qdt,
-  title   = {Quantum-Assisted Digital Twin for Closed-Loop Secure and 
-             Adaptive ISAC in 6G Open RAN},
+  title   = {Trust-Aware Quantum-Assisted Digital Twin Control for Secure
+             and Adaptive ISAC in 6G Open RAN},
   author  = {Al-Karawi, Yassir Ameen Ahmed},
   journal = {Submitted to IEEE Journal on Selected Areas in Communications},
   year    = {2026},
@@ -278,8 +281,8 @@ qdt-isac-6g/
 
 ---
 
-## 📜 License
+## 13. License
 
-The **simulation code** in this repository is licensed under the MIT License — see [LICENSE](LICENSE) for details.
-
-The **manuscript** in `paper/` is © 2026 the author. If accepted, copyright will transfer to IEEE per their publication agreement. The manuscript is included for reference only and may not be redistributed without permission.
+Simulation code: MIT — see [LICENSE](LICENSE).
+Manuscript in `paper/`: © 2026 the author, all rights reserved until
+publication (copyright transfers to IEEE on acceptance).
