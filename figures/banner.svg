@@ -88,6 +88,9 @@
 
     <rect x="397" y="0" width="80" height="22" rx="4" fill="#00c6ff" opacity="0.15"/>
     <text x="437" y="15" text-anchor="middle" font-family="monospace" font-size="10" fill="#00c6ff">Open RAN</text>
+
+    <rect x="487" y="0" width="85" height="22" rx="4" fill="#ffd200" opacity="0.15"/>
+    <text x="530" y="15" text-anchor="middle" font-family="monospace" font-size="10" fill="#ffd200">Formal</text>
   </g>
 
   <!-- Right side: mini stats -->
@@ -101,10 +104,13 @@
     <text x="0" y="70" font-size="28" font-weight="700" fill="white">3000</text>
     <text x="80" y="70" font-size="11" fill="#7fb3c0">time slots</text>
 
-    <text x="0" y="105" font-size="28" font-weight="700" fill="white">5</text>
+    <text x="0" y="105" font-size="28" font-weight="700" fill="white">7</text>
     <text x="25" y="105" font-size="11" fill="#7fb3c0">baseline methods</text>
 
     <text x="0" y="140" font-size="28" font-weight="700" fill="white">12+</text>
     <text x="55" y="140" font-size="11" fill="#7fb3c0">parameter sweeps</text>
+
+    <text x="0" y="175" font-size="28" font-weight="700" fill="white">33</text>
+    <text x="50" y="175" font-size="11" fill="#7fb3c0">unit tests</text>
   </g>
 </svg>

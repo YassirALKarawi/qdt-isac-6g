@@ -178,7 +178,7 @@
   <text x="28" y="380" font-size="10" fill="#5CB85C" font-weight="700" transform="rotate(-90,28,380)" letter-spacing="2">FEEDBACK</text>
 
   <!-- Bottom info -->
-  <text x="600" y="700" text-anchor="middle" font-size="10" fill="#bdc3c7">5 Baselines  ·  50 Monte Carlo  ·  3000 Time Slots  ·  12+ Parameter Sweeps</text>
+  <text x="600" y="700" text-anchor="middle" font-size="10" fill="#bdc3c7">7 Baselines  ·  50 Monte Carlo  ·  3000 Time Slots  ·  12+ Parameter Sweeps  ·  Ablation Study</text>
   <line x1="300" y1="710" x2="900" y2="710" stroke="#ecf0f1" stroke-width="0.5"/>
   <text x="600" y="730" text-anchor="middle" font-size="9" fill="#d5d8dc">github.com/YassirALKarawi/qdt-isac-6g</text>
 </svg>

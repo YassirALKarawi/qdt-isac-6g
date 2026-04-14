@@ -58,6 +58,14 @@
   <img src="figures/isac_signal_model.png" width="850"/>
 </p>
 
+### O-RAN Architecture Alignment
+
+<p align="center">
+  <img src="figures/oran_architecture.png" width="850"/>
+</p>
+
+Mapping of framework components to O-RAN functional entities: the digital twin orchestrator sits in the **non-RT RIC** as an rApp, while the ISAC resource allocation and security monitoring operate as **xApps** in the **near-RT RIC**, communicating via standardised **A1** (policy) and **E2** (control) interfaces.
+
 ---
 
 ## ✨ Key Features
@@ -153,6 +161,33 @@ The Full Proposed method maintains superior utility under increasing anomaly pro
 </p>
 
 Performance degrades gracefully as twin synchronisation delay increases, validating the framework's robustness to imperfect state information.
+
+---
+
+## 📐 Formal Analysis
+
+Two analytical results provide guarantees on closed-loop behaviour:
+
+**Proposition 1 (Trust-Gated Resource Bound):** Under anomaly rate $p_a$ and decay $\beta$, the steady-state trust satisfies $\tau_\infty \geq \alpha / (\alpha + \beta \cdot p_a \cdot \mathbb{E}[\text{excess}])$, ensuring bounded resource gating.
+
+**Proposition 2 (Utility Degradation under Twin Delay):** For twin sync delay $\delta$ and state decay $\gamma$, the utility loss is bounded by $\Delta J \leq (w_c + w_s)(1 - \gamma^\delta)$, growing monotonically with $\delta$.
+
+Run `python main.py --analysis` to compute bounds for any configuration.
+
+---
+
+## 🧪 Ablation Study
+
+Run `python main.py --ablation` to systematically disable components of the Full Proposed method and measure their individual contribution to overall utility.
+
+| Configuration | What is disabled |
+|:---|:---|
+| Full Proposed | Nothing (reference) |
+| No QA | Quantum-assisted candidate search |
+| No Security | Anomaly detection and trust gating |
+| No Twin Adaptation | Twin staleness and sync delay |
+| No Power Adaptation | Online weight tuning |
+| No Sensing Adaptation | Sensing power fraction control |
 
 ---
 
