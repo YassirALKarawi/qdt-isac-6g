@@ -21,10 +21,12 @@ plt.rcParams.update({
 })
 
 BL = {0:"Static ISAC", 1:"Adaptive ISAC", 2:"DT (no QA)",
-      3:"DT+QA (no Sec)", 4:"Full Proposed"}
-MK = {0:'s', 1:'^', 2:'D', 3:'v', 4:'o'}
-CL = {0:'#d62728', 1:'#ff7f0e', 2:'#2ca02c', 3:'#9467bd', 4:'#1f77b4'}
-LS = {0:'--', 1:'-.', 2:':', 3:'--', 4:'-'}
+      3:"DT+QA (no Sec)", 4:"Full Proposed",
+      5:"Uncertainty-Aware", 6:"UCB Learning"}
+MK = {0:'s', 1:'^', 2:'D', 3:'v', 4:'o', 5:'P', 6:'X'}
+CL = {0:'#d62728', 1:'#ff7f0e', 2:'#2ca02c', 3:'#9467bd', 4:'#1f77b4',
+      5:'#8c564b', 6:'#e377c2'}
+LS = {0:'--', 1:'-.', 2:':', 3:'--', 4:'-', 5:'-.', 6:':'}
 
 
 def _save(fig, d, name):

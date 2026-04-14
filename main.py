@@ -18,7 +18,7 @@ from plotting import plot_bars, plot_time, plot_cdf, plot_sweep, make_table
 def run_baselines(cfg, odir, pdir, verbose=True):
     all_sum = pd.DataFrame()
     all_slots = {}
-    for bl in range(5):
+    for bl in range(7):
         c = copy.copy(cfg); c.baseline_id = bl
         mc = MetricsCollector(steady_state_fraction=0.5)
         run_mc(c, mc, verbose=verbose)
@@ -53,7 +53,7 @@ def run_one_sweep(cfg, name, odir, pdir, verbose=True):
     param, vals = si['param'], si['values']
     if verbose: print(f"\n### SWEEP: {name} ({param}) = {vals}")
     bl_data = {}
-    for bl in [0, 2, 4]:
+    for bl in [0, 2, 4, 5, 6]:
         bl_sums = pd.DataFrame()
         for v in vals:
             c = copy.copy(cfg); c.baseline_id = bl
@@ -73,11 +73,71 @@ def run_one_sweep(cfg, name, odir, pdir, verbose=True):
             print(f"  Plot warning: {e}")
 
 
+def run_ablation(cfg, odir, pdir, verbose=True):
+    """Ablation study: systematically disable components of BL4."""
+    if verbose:
+        print("\n### ABLATION STUDY ###")
+    ablation_configs = [
+        ("Full Proposed", {}),
+        ("No QA", {"qa_enabled": False}),
+        ("No Security", {"anomaly_prob": 0.0}),
+        ("No Twin Adaptation", {"twin_state_decay": 1.0, "twin_sync_delay_slots": 0}),
+        ("No Power Adaptation", {"control_lr": 0.0}),
+        ("No Sensing Adaptation", {"sensing_power_fraction": 0.20}),
+    ]
+    results = pd.DataFrame()
+    for name, overrides in ablation_configs:
+        c = copy.copy(cfg)
+        c.baseline_id = 4
+        for k, v in overrides.items():
+            setattr(c, k, v)
+        mc = MetricsCollector(steady_state_fraction=0.5)
+        run_mc(c, mc, verbose=verbose)
+        s = mc.summary_df()
+        s['ablation'] = name
+        results = pd.concat([results, s], ignore_index=True)
+        if verbose:
+            u = s['utility_mean'].mean()
+            print(f"  {name:30s} => Utility = {u:.4f}")
+    results.to_csv(f"{odir}/ablation.csv", index=False)
+    if verbose:
+        print(f"  Ablation results saved to {odir}/ablation.csv")
+    return results
+
+
+def run_analysis(cfg, odir, verbose=True):
+    """Compute formal bounds and convergence properties."""
+    from analysis import compute_all_bounds
+    if verbose:
+        print("\n### FORMAL ANALYSIS ###")
+    bounds = compute_all_bounds(cfg)
+    if verbose:
+        tb = bounds['trust_bound']
+        ub = bounds['utility_bound']
+        print(f"  Trust lower bound:    {tb['tau_lower']:.4f}")
+        print(f"  Trust upper bound:    {tb['tau_upper']:.4f}")
+        print(f"  Mixing time (slots):  {tb['mixing_time']}")
+        print(f"  Utility loss bound:   {ub['delta_j_upper']:.4f}")
+        print(f"  Comm loss component:  {ub['comm_loss']:.4f}")
+        print(f"  Sense loss component: {ub['sense_loss']:.4f}")
+    import json
+    Path(odir).mkdir(exist_ok=True)
+    with open(f"{odir}/formal_bounds.json", 'w') as f:
+        json.dump(bounds, f, indent=2)
+    if verbose:
+        print(f"  Bounds saved to {odir}/formal_bounds.json")
+    return bounds
+
+
 def main():
     ap = argparse.ArgumentParser(description="QDT-ISAC 6G Simulator")
     ap.add_argument('--quick', action='store_true')
     ap.add_argument('--baseline', type=int, default=None)
     ap.add_argument('--sweep', type=str, default=None)
+    ap.add_argument('--ablation', action='store_true',
+                    help='Run ablation study on Full Proposed')
+    ap.add_argument('--analysis', action='store_true',
+                    help='Compute formal bounds and convergence')
     ap.add_argument('--seed', type=int, default=42)
     ap.add_argument('--mc', type=int, default=None)
     ap.add_argument('--slots', type=int, default=None)
@@ -103,6 +163,10 @@ def main():
         mc.save(odir, f"bl{args.baseline}_")
     elif args.sweep:
         run_one_sweep(cfg, args.sweep, odir, pdir)
+    elif args.ablation:
+        run_ablation(cfg, odir, pdir)
+    elif args.analysis:
+        run_analysis(cfg, odir)
     else:
         run_baselines(cfg, odir, pdir)
         for sw in ['user_density', 'anomaly_prob', 'twin_delay',
@@ -110,6 +174,8 @@ def main():
                     'scalability', 'quantum_onoff', 'twin_fidelity', 'mobility',
                     'weight_sweep']:
             run_one_sweep(cfg, sw, odir, pdir)
+        run_ablation(cfg, odir, pdir)
+        run_analysis(cfg, odir)
 
     print(f"\nDone in {time.time()-t0:.1f}s | Results: {odir}/ | Figures: {pdir}/")
 

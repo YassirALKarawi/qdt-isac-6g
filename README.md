@@ -72,7 +72,9 @@
 | **Security** | EWMA anomaly detection (dual-channel), Bayesian trust dynamics, jamming + spoofing |
 | **Quantum Assist** | Quantum-inspired candidate screening for uncertainty-aware action ranking |
 | **Controller** | Closed-loop adaptive: per-BS power control, sensing/comm split, trust gating |
-| **Evaluation** | 50 Monte Carlo runs, 3000 slots, 12+ parameter sweeps, 95% CI |
+| **Formal Analysis** | Trust-gated resource bounds, utility degradation under twin delay, convergence |
+| **O-RAN Mapping** | Architectural alignment with near-RT RIC / non-RT RIC, A1/E2 interfaces |
+| **Evaluation** | 7 baselines, ablation study, 50 MC runs, 3000 slots, 12+ sweeps, 95% CI |
 
 ---
 
@@ -154,6 +156,8 @@ Performance degrades gracefully as twin synchronisation delay increases, validat
 | 2 | DT-guided | ✓ | ✗ | ✓ | Twin-predicted PF allocation |
 | 3 | DT+QA (attack-unaware) | ✓ | ✓ | ✗ | Quantum search, blind to attacks |
 | 4 | **Full Proposed** | ✓ | ✓ | ✓ | Complete closed-loop system |
+| 5 | Uncertainty-Aware | ✗ | ✗ | ✗ | SINR-variance-driven robust allocation |
+| 6 | UCB Learning | ✗ | ✗ | ✗ | Online bandit-based RB optimisation |
 
 ---
 
@@ -180,6 +184,12 @@ python main.py --baseline 4 --mc 10 --slots 1000
 python main.py --sweep anomaly_prob
 python main.py --sweep twin_delay
 python main.py --sweep clutter
+
+# Ablation study (disables components of Full Proposed one at a time)
+python main.py --ablation --mc 10 --slots 1000
+
+# Formal analysis (trust bounds, utility degradation bounds)
+python main.py --analysis
 ```
 
 ---
@@ -224,14 +234,17 @@ qdt-isac-6g/
 ├── digital_twin.py      # Imperfect DT: delay, noise, staleness
 ├── security.py          # EWMA detection + Bayesian trust
 ├── quantum_assist.py    # Quantum-inspired candidate search
-├── controller.py        # 5 baseline controllers
+├── controller.py        # 7 baseline controllers (incl. UCB, uncertainty-aware)
 ├── simulator.py         # Discrete-time simulation engine
+├── analysis.py          # Formal bounds: trust gating, utility degradation, convergence
+├── oran_mapping.py      # O-RAN architecture alignment (RIC, A1/E2, xApps)
 ├── metrics.py           # CSV/JSON metrics export + CI95
 ├── plotting.py          # Publication-quality figures
-├── main.py              # CLI entry point
-├── tests/               # Verification tests (pytest)
+├── main.py              # CLI entry point (baselines, sweeps, ablation, analysis)
+├── tests/               # 33 verification tests (pytest)
 ├── figures/             # Generated plots
 ├── results/             # Output CSV/JSON
+├── paper/               # LaTeX manuscript + compiled PDF
 ├── requirements.txt
 ├── requirements-dev.txt
 └── LICENSE

@@ -1,10 +1,12 @@
 """
-Controller: 5 methods with proper differentiation.
+Controller: 7 methods with proper differentiation.
   0: Static equal allocation
   1: Adaptive rebalancing from measurements (no twin)
   2: DT-guided PF allocation (no quantum)
   3: DT + quantum candidate search (no security)
   4: Full: DT + quantum + security-aware closed-loop
+  5: Uncertainty-aware heuristic (no twin, uses measurement variance)
+  6: UCB-based learning allocation (no twin, online learning)
 """
 import numpy as np
 import time as _time
@@ -35,13 +37,21 @@ class Controller:
         self.w_sec = cfg.weight_sec
         self.w_e = cfg.weight_energy
         self.latency_ms = 0.0
+        # BL5: uncertainty-aware state
+        self._sinr_history: Dict[int, list] = {}
+        self._sinr_var: Dict[int, float] = {}
+        # BL6: UCB learning state
+        self._ucb_counts: Dict[int, np.ndarray] = {}  # bs_id -> per-user RB counts
+        self._ucb_rewards: Dict[int, np.ndarray] = {}
+        self._ucb_slot: int = 0
 
     def step(self, slot, bss, users, targets):
         t0 = _time.perf_counter()
         # ALL baselines face the same attack environment
         if self.sec:
             self.sec.inject(slot, users, targets)
-        methods = [self._bl0, self._bl1, self._bl2, self._bl3, self._bl4]
+        methods = [self._bl0, self._bl1, self._bl2, self._bl3, self._bl4,
+                   self._bl5, self._bl6]
         methods[self.bl](slot, bss, users, targets)
         # Track active RBs per BS for energy accounting
         for bs in bss:
@@ -160,6 +170,103 @@ class Controller:
         self.comm.evaluate(bss, users)
         self.sense.evaluate(bss, targets)
         self._adapt(users, targets, slot)
+
+    # === BL5: Uncertainty-Aware Heuristic (no twin, uses measurement variance) ===
+    # Maintains a sliding window of SINR measurements per user and allocates
+    # more RBs to users with high SINR variance (uncertain channel state).
+    # This is a stronger baseline than BL1 because it explicitly accounts
+    # for channel uncertainty without requiring a digital twin.
+    def _bl5(self, slot, bss, users, targets):
+        self.comm.assign_users(bss, users)
+        self.comm.evaluate(bss, users)
+        self.sense.evaluate(bss, targets)
+        # Update SINR history
+        window = 50
+        for u in users:
+            hist = self._sinr_history.setdefault(u.user_id, [])
+            hist.append(u.sinr_db)
+            if len(hist) > window:
+                hist.pop(0)
+            self._sinr_var[u.user_id] = np.var(hist) if len(hist) > 3 else 10.0
+        # Uncertainty-aware allocation
+        for bs in bss:
+            if len(bs.served_users) < 2:
+                continue
+            base = max(1, self.cfg.n_resource_blocks // len(bs.served_users))
+            vars_list = {uid: self._sinr_var.get(uid, 10.0) for uid in bs.served_users}
+            avg_var = np.mean(list(vars_list.values()))
+            for uid in bs.served_users:
+                # High variance → more RBs (robustness); low variance → fewer
+                v = vars_list[uid]
+                if v > avg_var * 1.5:
+                    delta = 2
+                elif v > avg_var:
+                    delta = 1
+                elif v < avg_var * 0.5:
+                    delta = -1
+                else:
+                    delta = 0
+                bs.rb_alloc[uid] = max(1, base + delta)
+        self.comm.evaluate(bss, users)
+
+    # === BL6: UCB-Based Online Learning (no twin, bandit-style) ===
+    # Treats RB allocation levels as arms in a multi-armed bandit.
+    # Uses Upper Confidence Bound to balance exploration and exploitation
+    # of allocation strategies. A stronger baseline that learns from
+    # observed throughput without any predictive model.
+    def _bl6(self, slot, bss, users, targets):
+        self.comm.assign_users(bss, users)
+        self.comm.evaluate(bss, users)
+        self.sense.evaluate(bss, targets)
+        self._ucb_slot += 1
+        n_arms = 5  # allocation levels: base-2, base-1, base, base+1, base+2
+        for bs in bss:
+            if len(bs.served_users) < 1:
+                continue
+            base = max(1, self.cfg.n_resource_blocks // max(len(bs.served_users), 1))
+            bid = bs.bs_id
+            if bid not in self._ucb_counts:
+                n_u = max(len(bs.served_users), 1)
+                self._ucb_counts[bid] = np.ones((n_u, n_arms))
+                self._ucb_rewards[bid] = np.zeros((n_u, n_arms))
+            counts = self._ucb_counts[bid]
+            rewards = self._ucb_rewards[bid]
+            # Resize if user count changed
+            n_u = len(bs.served_users)
+            if counts.shape[0] != n_u:
+                counts = np.ones((n_u, n_arms))
+                rewards = np.zeros((n_u, n_arms))
+                self._ucb_counts[bid] = counts
+                self._ucb_rewards[bid] = rewards
+            c = self.cfg.ucb_exploration
+            for i, uid in enumerate(bs.served_users):
+                # UCB1 selection
+                avg_r = rewards[i] / (counts[i] + 1e-10)
+                bonus = c * np.sqrt(np.log(self._ucb_slot + 1) / (counts[i] + 1e-10))
+                ucb_vals = avg_r + bonus
+                arm = int(np.argmax(ucb_vals))
+                delta = arm - 2  # arms map to -2, -1, 0, +1, +2
+                bs.rb_alloc[uid] = max(1, base + delta)
+        # Re-evaluate with new allocation
+        self.comm.evaluate(bss, users)
+        # Update UCB rewards from observed throughput
+        for bs in bss:
+            bid = bs.bs_id
+            if bid not in self._ucb_counts:
+                continue
+            base = max(1, self.cfg.n_resource_blocks // max(len(bs.served_users), 1))
+            for i, uid in enumerate(bs.served_users):
+                if i >= self._ucb_counts[bid].shape[0]:
+                    break
+                u = next((u for u in users if u.user_id == uid), None)
+                if u is None:
+                    continue
+                alloc = bs.rb_alloc.get(uid, base)
+                arm = np.clip(alloc - base + 2, 0, 4)
+                reward = u.throughput / 1e6  # normalise to Mbps
+                self._ucb_counts[bid][i, arm] += 1
+                self._ucb_rewards[bid][i, arm] += reward
+        self.sense.evaluate(bss, targets)
 
     def _adapt(self, users, targets, slot):
         if slot % 200 != 0 or slot == 0: return

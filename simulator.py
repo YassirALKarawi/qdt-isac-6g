@@ -14,7 +14,8 @@ from controller import Controller
 from metrics import MetricsCollector
 
 BL_NAMES = {0:"Static ISAC", 1:"Adaptive ISAC", 2:"DT (no QA)",
-            3:"DT+QA (no Sec)", 4:"Full Proposed"}
+            3:"DT+QA (no Sec)", 4:"Full Proposed",
+            5:"Uncertainty-Aware", 6:"UCB Learning"}
 
 
 def run_one(cfg: SimConfig, run_id: int, mc: MetricsCollector, extra=None):
@@ -24,7 +25,7 @@ def run_one(cfg: SimConfig, run_id: int, mc: MetricsCollector, extra=None):
     comm = CommModel(cfg, ch)
     sense = SensingModel(cfg, rng)
 
-    use_twin = cfg.baseline_id >= 2
+    use_twin = cfg.baseline_id in [2, 3, 4]
     use_qa   = cfg.baseline_id in [3, 4]
 
     twin = DigitalTwin(cfg, rng) if use_twin else None

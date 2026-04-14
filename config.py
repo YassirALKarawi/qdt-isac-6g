@@ -77,10 +77,16 @@ class SimConfig:
     compute_power_per_rb_w: float = 0.05 # DSP power per active RB
     sensing_compute_overhead_w: float = 2.0 # extra power for radar processing
     pa_efficiency: float = 0.35          # power amplifier efficiency
-    # Baseline
+    # Baseline (0-6)
     baseline_id: int = 4
     results_dir: str = "results"
     plots_dir: str = "plots"
+    # Predictor baseline (BL5)
+    predictor_horizon: int = 5
+    predictor_alpha: float = 0.3
+    # Learning-based baseline (BL6)
+    ucb_exploration: float = 1.0
+    ucb_window: int = 200
 
     def noise_power_w(self) -> float:
         bw = self.bs_bandwidth_mhz * 1e6
