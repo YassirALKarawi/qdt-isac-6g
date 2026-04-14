@@ -99,30 +99,37 @@ This framework is intentionally abstraction-driven and should be interpreted as 
 
 The Full Proposed method achieves the best overall trade-off across communication, sensing, security, and energy efficiency.
 
-### Example Results (illustrative configuration: 5 MC × 500 slots)
+### Example Results (illustrative configuration: 3 MC × 300 slots)
 
 <p align="center">
-  <img src="figures/baseline_bars.png" width="850"/>
+  <img src="figures/baseline_comparison.png" width="850"/>
 </p>
 
 | Method | Sum Rate (Mbps) | P_d | Trust | Energy | Utility |
 |:-------|:-:|:-:|:-:|:-:|:-:|
-| Static ISAC | 1064 ± 121 | 0.600 | 1.000 | 0.996 | 0.276 |
-| Adaptive ISAC | 976 ± 106 | 0.559 | 1.000 | 0.997 | 0.264 |
-| DT (no QA) | 1009 ± 76 | 0.546 | 0.839 | 0.997 | 0.352 |
-| DT+QA (no Sec) | 1051 ± 130 | 0.524 | 1.000 | 0.998 | 0.263 |
-| **Full Proposed** | **1086 ± 95** | **0.743** | 0.837 | **0.965** | **0.397** |
+| Static ISAC | 1022 ± 110 | 0.600 | 1.000 | 0.996 | 0.265 |
+| Adaptive ISAC | 881 ± 95 | 0.559 | 1.000 | 0.997 | 0.245 |
+| DT (no QA) | 968 ± 72 | 0.546 | 0.839 | 0.997 | 0.344 |
+| DT+QA (no Sec) | 1070 ± 120 | 0.524 | 1.000 | 0.998 | 0.270 |
+| **Full Proposed** | **1082 ± 90** | **0.743** | 0.837 | **0.965** | **0.366** |
+| Uncertainty-Aware | 962 ± 98 | 0.580 | 1.000 | 0.997 | 0.264 |
+| UCB Learning | 635 ± 85 | 0.550 | 1.000 | 0.998 | 0.230 |
 
 ### Time Evolution — Full Proposed Method
 
 <p align="center">
-  <img src="figures/time_evolution.png" width="850"/>
+  <img src="figures/time_evolution_bl4.png" width="850"/>
 </p>
 
 ### Cumulative Distribution Functions
 
 <p align="center">
-  <img src="figures/cdf_all.png" width="850"/>
+  <img src="figures/cdf_sum_rate.png" width="420"/>
+  <img src="figures/cdf_avg_pd.png" width="420"/>
+</p>
+<p align="center">
+  <img src="figures/cdf_trust.png" width="420"/>
+  <img src="figures/cdf_twin_err.png" width="420"/>
 </p>
 
 ---
@@ -132,7 +139,8 @@ The Full Proposed method achieves the best overall trade-off across communicatio
 ### Attack Intensity Sweep
 
 <p align="center">
-  <img src="figures/sweep_anomaly.png" width="850"/>
+  <img src="figures/sweep_anomaly_prob_utility.png" width="420"/>
+  <img src="figures/sweep_anomaly_prob_avg_pd.png" width="420"/>
 </p>
 
 The Full Proposed method maintains superior utility under increasing anomaly probability, demonstrating the value of security-aware closed-loop control.
@@ -140,7 +148,8 @@ The Full Proposed method maintains superior utility under increasing anomaly pro
 ### Digital Twin Delay Sweep
 
 <p align="center">
-  <img src="figures/sweep_twin_delay.png" width="850"/>
+  <img src="figures/sweep_twin_delay_utility.png" width="420"/>
+  <img src="figures/sweep_twin_delay_sum_rate.png" width="420"/>
 </p>
 
 Performance degrades gracefully as twin synchronisation delay increases, validating the framework's robustness to imperfect state information.
