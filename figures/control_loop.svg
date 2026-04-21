@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <filter id="sh" x="-3%" y="-3%" width="106%" height="110%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.07"/>
+    </filter>
+    <linearGradient id="gN" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2C3E50"/><stop offset="100%" stop-color="#1A252F"/>
+    </linearGradient>
+    <marker id="aG" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#27AE60"/>
+    </marker>
+    <marker id="aB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2980B9"/>
+    </marker>
+    <marker id="aR" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#E74C3C"/>
+    </marker>
+    <marker id="aP" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8E44AD"/>
+    </marker>
+    <marker id="aO" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#E67E22"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="500" fill="#FAFBFC" rx="8"/>
+  <text x="500" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#2C3E50">Closed-Loop Control Flow — Per Time Slot</text>
+  <line x1="200" y1="44" x2="800" y2="44" stroke="#ecf0f1"/>
+
+  <!-- Step 1: Mobility -->
+  <g filter="url(#sh)">
+    <rect x="30" y="60" width="170" height="100" rx="10" fill="white" stroke="#27AE60" stroke-width="2"/>
+    <rect x="30" y="60" width="170" height="28" rx="10" fill="#27AE60"/>
+    <rect x="30" y="76" width="170" height="12" fill="#27AE60"/>
+    <text x="115" y="80" text-anchor="middle" font-size="11" font-weight="700" fill="white">① Mobility</text>
+    <text x="115" y="105" text-anchor="middle" font-size="9" fill="#555">UE: 1–5 m/s</text>
+    <text x="115" y="120" text-anchor="middle" font-size="9" fill="#555">Targets: 5–20 m/s</text>
+    <text x="115" y="135" text-anchor="middle" font-size="9" fill="#555">Random waypoint</text>
+    <circle cx="115" cy="60" r="14" fill="#27AE60"/>
+    <text x="115" y="65" text-anchor="middle" font-size="11" font-weight="700" fill="white">1</text>
+  </g>
+
+  <!-- Step 2: Attack -->
+  <g filter="url(#sh)">
+    <rect x="30" y="185" width="170" height="100" rx="10" fill="white" stroke="#E74C3C" stroke-width="2"/>
+    <rect x="30" y="185" width="170" height="28" rx="10" fill="#E74C3C"/>
+    <rect x="30" y="201" width="170" height="12" fill="#E74C3C"/>
+    <text x="115" y="205" text-anchor="middle" font-size="11" font-weight="700" fill="white">② Attack Injection</text>
+    <text x="115" y="230" text-anchor="middle" font-size="9" fill="#555">p_anomaly = 0.08</text>
+    <text x="115" y="248" text-anchor="middle" font-size="9" fill="#555">Jamming / Spoofing</text>
+    <text x="115" y="266" text-anchor="middle" font-size="9" fill="#555">All baselines exposed</text>
+    <circle cx="115" cy="185" r="14" fill="#E74C3C"/>
+    <text x="115" y="190" text-anchor="middle" font-size="11" font-weight="700" fill="white">2</text>
+  </g>
+
+  <!-- Step 3: Evaluate -->
+  <g filter="url(#sh)">
+    <rect x="250" y="60" width="190" height="225" rx="10" fill="white" stroke="#E67E22" stroke-width="2"/>
+    <rect x="250" y="60" width="190" height="28" rx="10" fill="#E67E22"/>
+    <rect x="250" y="76" width="190" height="12" fill="#E67E22"/>
+    <text x="345" y="80" text-anchor="middle" font-size="11" font-weight="700" fill="white">③ Evaluate ISAC</text>
+    <text x="345" y="108" text-anchor="middle" font-size="9" fill="#555" font-weight="600">Communication:</text>
+    <text x="345" y="125" text-anchor="middle" font-size="9" fill="#888">SINR · Throughput · Outage</text>
+    <line x1="270" y1="135" x2="420" y2="135" stroke="#ecf0f1"/>
+    <text x="345" y="153" text-anchor="middle" font-size="9" fill="#555" font-weight="600">Sensing:</text>
+    <text x="345" y="170" text-anchor="middle" font-size="9" fill="#888">Radar SNR · P_d · Tracking</text>
+    <line x1="270" y1="180" x2="420" y2="180" stroke="#ecf0f1"/>
+    <text x="345" y="198" text-anchor="middle" font-size="9" fill="#555" font-weight="600">Energy:</text>
+    <text x="345" y="215" text-anchor="middle" font-size="9" fill="#888">PA + Circuit + DSP</text>
+    <line x1="270" y1="225" x2="420" y2="225" stroke="#ecf0f1"/>
+    <text x="345" y="243" text-anchor="middle" font-size="9" fill="#555" font-weight="600">Assignment:</text>
+    <text x="345" y="260" text-anchor="middle" font-size="9" fill="#888">UE → BS · RB allocation</text>
+    <circle cx="345" cy="60" r="14" fill="#E67E22"/>
+    <text x="345" y="65" text-anchor="middle" font-size="11" font-weight="700" fill="white">3</text>
+  </g>
+
+  <!-- Step 4: Twin Update -->
+  <g filter="url(#sh)">
+    <rect x="490" y="60" width="190" height="120" rx="10" fill="white" stroke="#8E44AD" stroke-width="2"/>
+    <rect x="490" y="60" width="190" height="28" rx="10" fill="#8E44AD"/>
+    <rect x="490" y="76" width="190" height="12" fill="#8E44AD"/>
+    <text x="585" y="80" text-anchor="middle" font-size="11" font-weight="700" fill="white">④ Twin Update</text>
+    <text x="585" y="108" text-anchor="middle" font-size="9" fill="#555">Push observations</text>
+    <text x="585" y="125" text-anchor="middle" font-size="9" fill="#555">Apply delayed state</text>
+    <text x="585" y="142" text-anchor="middle" font-size="9" fill="#555">Compute confidence</text>
+    <text x="585" y="159" text-anchor="middle" font-size="9" fill="#555">Measure twin error</text>
+    <circle cx="585" cy="60" r="14" fill="#8E44AD"/>
+    <text x="585" y="65" text-anchor="middle" font-size="11" font-weight="700" fill="white">4</text>
+  </g>
+
+  <!-- Step 5: Security -->
+  <g filter="url(#sh)">
+    <rect x="490" y="200" width="190" height="90" rx="10" fill="white" stroke="#E74C3C" stroke-width="2"/>
+    <rect x="490" y="200" width="190" height="28" rx="10" fill="#E74C3C"/>
+    <rect x="490" y="216" width="190" height="12" fill="#E74C3C"/>
+    <text x="585" y="220" text-anchor="middle" font-size="11" font-weight="700" fill="white">⑤ Anomaly Detect</text>
+    <text x="585" y="248" text-anchor="middle" font-size="9" fill="#555">EWMA score vs threshold</text>
+    <text x="585" y="265" text-anchor="middle" font-size="9" fill="#555">Update trust scores</text>
+    <text x="585" y="282" text-anchor="middle" font-size="9" fill="#555">Flag compromised entities</text>
+    <circle cx="585" cy="200" r="14" fill="#E74C3C"/>
+    <text x="585" y="205" text-anchor="middle" font-size="11" font-weight="700" fill="white">5</text>
+  </g>
+
+  <!-- Step 6: Controller -->
+  <g filter="url(#sh)">
+    <rect x="730" y="60" width="240" height="230" rx="10" fill="url(#gN)"/>
+    <text x="850" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="white">⑥ Adaptive Controller</text>
+    <text x="850" y="112" text-anchor="middle" font-size="9" fill="#AEB6BF">QA candidate search</text>
+    <text x="850" y="130" text-anchor="middle" font-size="9" fill="#AEB6BF">Trust-weighted RB alloc</text>
+    <text x="850" y="148" text-anchor="middle" font-size="9" fill="#AEB6BF">Tx power adaptation</text>
+    <text x="850" y="166" text-anchor="middle" font-size="9" fill="#AEB6BF">Sensing fraction control</text>
+    <text x="850" y="184" text-anchor="middle" font-size="9" fill="#AEB6BF">Online weight tuning</text>
+    <line x1="750" y1="198" x2="950" y2="198" stroke="#34495E"/>
+    <text x="850" y="218" text-anchor="middle" font-size="9" fill="#F39C12" font-weight="600">Utility J =</text>
+    <text x="850" y="236" text-anchor="middle" font-size="8" fill="#AEB6BF">w_c·R + w_s·S + w_sec·T − w_e·E</text>
+    <text x="850" y="256" text-anchor="middle" font-size="8" fill="#AEB6BF">Weights adapt every 200 slots</text>
+    <text x="850" y="276" text-anchor="middle" font-size="8" fill="#AEB6BF">7 controller strategies (BL0–BL6)</text>
+    <circle cx="850" cy="60" r="14" fill="#F39C12"/>
+    <text x="850" y="65" text-anchor="middle" font-size="11" font-weight="700" fill="white">6</text>
+  </g>
+
+  <!-- Arrows between steps -->
+  <line x1="115" y1="160" x2="115" y2="185" stroke="#E74C3C" stroke-width="2" marker-end="url(#aR)"/>
+  <line x1="200" y1="120" x2="250" y2="120" stroke="#27AE60" stroke-width="2" marker-end="url(#aG)"/>
+  <line x1="200" y1="235" x2="250" y2="200" stroke="#E74C3C" stroke-width="2" marker-end="url(#aR)"/>
+  <line x1="440" y1="120" x2="490" y2="120" stroke="#8E44AD" stroke-width="2" marker-end="url(#aP)"/>
+  <line x1="585" y1="180" x2="585" y2="200" stroke="#E74C3C" stroke-width="2" marker-end="url(#aR)"/>
+  <line x1="680" y1="160" x2="730" y2="160" stroke="#2980B9" stroke-width="2" marker-end="url(#aB)"/>
+
+  <!-- Feedback loop -->
+  <path d="M 850 290 L 850 430 L 115 430 L 115 295" stroke="#27AE60" stroke-width="2.5" fill="none" stroke-dasharray="8,4" marker-end="url(#aG)"/>
+  <rect x="400" y="418" width="200" height="24" rx="12" fill="#E8F8F5" stroke="#27AE60" stroke-width="1"/>
+  <text x="500" y="434" text-anchor="middle" font-size="10" font-weight="600" fill="#1E8449">Feedback → Next Slot</text>
+
+  <!-- Step 7: Metrics -->
+  <g filter="url(#sh)">
+    <rect x="730" y="310" width="240" height="80" rx="10" fill="white" stroke="#3498DB" stroke-width="2"/>
+    <rect x="730" y="310" width="240" height="28" rx="10" fill="#3498DB"/>
+    <rect x="730" y="326" width="240" height="12" fill="#3498DB"/>
+    <text x="850" y="330" text-anchor="middle" font-size="11" font-weight="700" fill="white">⑦ Record Metrics</text>
+    <text x="850" y="358" text-anchor="middle" font-size="9" fill="#555">SR, P_d, trust, energy, utility, latency</text>
+    <text x="850" y="375" text-anchor="middle" font-size="9" fill="#555">Per-slot → Monte Carlo aggregation → CI95</text>
+    <circle cx="850" cy="310" r="14" fill="#3498DB"/>
+    <text x="850" y="315" text-anchor="middle" font-size="11" font-weight="700" fill="white">7</text>
+  </g>
+
+  <text x="500" y="488" text-anchor="middle" font-size="9" fill="#bdc3c7">simulator.py + controller.py · Slot duration = 10 ms · 3000 slots × 50 MC runs · Steady-state: last 50%</text>
+</svg>

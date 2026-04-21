@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 360" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <filter id="sh" x="-3%" y="-3%" width="106%" height="110%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.07"/>
+    </filter>
+    <linearGradient id="gT" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1ABC9C"/><stop offset="100%" stop-color="#16A085"/>
+    </linearGradient>
+    <marker id="a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1ABC9C"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="360" fill="#FAFBFC" rx="8"/>
+  <text x="500" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#2C3E50">Quantum-Assisted Candidate Screening Engine</text>
+  <line x1="200" y1="44" x2="800" y2="44" stroke="#ecf0f1"/>
+
+  <!-- Step 1: Generate -->
+  <g filter="url(#sh)">
+    <rect x="30" y="65" width="220" height="240" rx="10" fill="white" stroke="#1ABC9C" stroke-width="2"/>
+    <rect x="30" y="65" width="220" height="30" rx="10" fill="url(#gT)"/>
+    <rect x="30" y="82" width="220" height="13" fill="url(#gT)"/>
+    <text x="140" y="87" text-anchor="middle" font-size="12" font-weight="700" fill="white">① Generate Candidates</text>
+    <text x="140" y="115" text-anchor="middle" font-size="10" fill="#555">20 candidates per BS</text>
+    <text x="140" y="138" text-anchor="middle" font-size="10" fill="#555">5 allocation strategies:</text>
+    <text x="140" y="158" text-anchor="middle" font-size="9" fill="#888">• Equal distribution</text>
+    <text x="140" y="175" text-anchor="middle" font-size="9" fill="#888">• SINR-compensating</text>
+    <text x="140" y="192" text-anchor="middle" font-size="9" fill="#888">• Max-throughput</text>
+    <text x="140" y="209" text-anchor="middle" font-size="9" fill="#888">• Confidence-weighted</text>
+    <text x="140" y="226" text-anchor="middle" font-size="9" fill="#888">• Random jitter</text>
+    <rect x="50" y="242" width="180" height="45" rx="6" fill="#E8F8F5" stroke="#1ABC9C"/>
+    <text x="140" y="262" text-anchor="middle" font-size="10" font-weight="600" fill="#16A085">Twin-informed</text>
+    <text x="140" y="278" text-anchor="middle" font-size="9" fill="#888">Uses DT estimates + conf.</text>
+  </g>
+
+  <!-- Step 2: Score -->
+  <g filter="url(#sh)">
+    <rect x="300" y="65" width="200" height="240" rx="10" fill="white" stroke="#E67E22" stroke-width="2"/>
+    <rect x="300" y="65" width="200" height="30" rx="10" fill="#E67E22"/>
+    <rect x="300" y="82" width="200" height="13" fill="#E67E22"/>
+    <text x="400" y="87" text-anchor="middle" font-size="12" font-weight="700" fill="white">② Score</text>
+    <text x="400" y="118" text-anchor="middle" font-size="10" fill="#555">Multi-objective scoring:</text>
+    <rect x="320" y="130" width="160" height="35" rx="5" fill="#FEF5E7" stroke="#E67E22"/>
+    <text x="400" y="152" text-anchor="middle" font-size="9" fill="#CA6F1E">w_c·comm + w_s·sense</text>
+    <rect x="320" y="175" width="160" height="35" rx="5" fill="#FEF5E7" stroke="#E67E22"/>
+    <text x="400" y="197" text-anchor="middle" font-size="9" fill="#CA6F1E">+ w_sec·trust − w_e·energy</text>
+    <text x="400" y="238" text-anchor="middle" font-size="10" fill="#555">Trust-weighted:</text>
+    <text x="400" y="258" text-anchor="middle" font-size="9" fill="#888">SE × n_rb × τ × conf</text>
+    <text x="400" y="278" text-anchor="middle" font-size="9" fill="#888">per-UE contribution</text>
+  </g>
+
+  <!-- Step 3: Quantum Search -->
+  <g filter="url(#sh)">
+    <rect x="550" y="65" width="220" height="240" rx="10" fill="white" stroke="#8E44AD" stroke-width="2"/>
+    <rect x="550" y="65" width="220" height="30" rx="10" fill="#8E44AD"/>
+    <rect x="550" y="82" width="220" height="13" fill="#8E44AD"/>
+    <text x="660" y="87" text-anchor="middle" font-size="12" font-weight="700" fill="white">③ Grover Search</text>
+    <text x="660" y="118" text-anchor="middle" font-size="10" fill="#555">Amplitude amplification</text>
+    <text x="660" y="140" text-anchor="middle" font-size="9" fill="#888">n_layers = ⌈√N⌉</text>
+    <text x="660" y="160" text-anchor="middle" font-size="9" fill="#888">Circuit time ∝ layers × N</text>
+    <rect x="570" y="175" width="180" height="50" rx="6" fill="#F4ECF7" stroke="#8E44AD"/>
+    <text x="660" y="195" text-anchor="middle" font-size="10" font-weight="600" fill="#6C3483">Decoherence model</text>
+    <text x="660" y="212" text-anchor="middle" font-size="9" fill="#888">p = F^layers · e^(−t/T_coh)</text>
+    <text x="660" y="245" text-anchor="middle" font-size="9" fill="#888">Success → global best</text>
+    <text x="660" y="262" text-anchor="middle" font-size="9" fill="#888">Failure → near-optimal</text>
+    <text x="660" y="282" text-anchor="middle" font-size="9" fill="#888">Speedup: √N vs N</text>
+  </g>
+
+  <!-- Step 4: Output -->
+  <g filter="url(#sh)">
+    <rect x="820" y="65" width="150" height="240" rx="10" fill="white" stroke="#2980B9" stroke-width="2"/>
+    <rect x="820" y="65" width="150" height="30" rx="10" fill="#2980B9"/>
+    <rect x="820" y="82" width="150" height="13" fill="#2980B9"/>
+    <text x="895" y="87" text-anchor="middle" font-size="12" font-weight="700" fill="white">④ Best Action</text>
+    <text x="895" y="120" text-anchor="middle" font-size="10" fill="#555">RB allocation</text>
+    <text x="895" y="145" text-anchor="middle" font-size="10" fill="#555">Sensing fraction</text>
+    <text x="895" y="170" text-anchor="middle" font-size="10" fill="#555">Per-BS optimal</text>
+    <line x1="840" y1="185" x2="950" y2="185" stroke="#ecf0f1"/>
+    <text x="895" y="210" text-anchor="middle" font-size="9" font-weight="600" fill="#2980B9">Passed to:</text>
+    <text x="895" y="232" text-anchor="middle" font-size="9" fill="#888">Controller</text>
+    <text x="895" y="252" text-anchor="middle" font-size="9" fill="#888">→ E2 interface</text>
+    <text x="895" y="272" text-anchor="middle" font-size="9" fill="#888">→ O-DU apply</text>
+  </g>
+
+  <!-- Arrows -->
+  <line x1="250" y1="185" x2="300" y2="185" stroke="#1ABC9C" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="500" y1="185" x2="550" y2="185" stroke="#1ABC9C" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="770" y1="185" x2="820" y2="185" stroke="#1ABC9C" stroke-width="2" marker-end="url(#a)"/>
+
+  <text x="500" y="340" text-anchor="middle" font-size="9" fill="#bdc3c7">quantum_assist.py · N=20 candidates · Gate fidelity 0.995 · Coherence 100 μs · Speedup factor 1.4×</text>
+</svg>

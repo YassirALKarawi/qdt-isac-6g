@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 360" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <filter id="sh" x="-3%" y="-3%" width="106%" height="110%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.07"/>
+    </filter>
+    <linearGradient id="gB" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2980B9"/><stop offset="100%" stop-color="#1F6DA0"/>
+    </linearGradient>
+    <linearGradient id="gO" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E67E22"/><stop offset="100%" stop-color="#CA6F1E"/>
+    </linearGradient>
+    <marker id="a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2980B9"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="360" fill="#FAFBFC" rx="8"/>
+  <text x="500" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#2C3E50">ISAC Signal Model — Joint Communication &amp; Sensing</text>
+  <line x1="200" y1="44" x2="800" y2="44" stroke="#ecf0f1"/>
+
+  <!-- BS Transmitter -->
+  <g filter="url(#sh)">
+    <rect x="30" y="60" width="180" height="250" rx="10" fill="white" stroke="#2980B9" stroke-width="2"/>
+    <rect x="30" y="60" width="180" height="28" rx="10" fill="url(#gB)"/>
+    <rect x="30" y="76" width="180" height="12" fill="url(#gB)"/>
+    <text x="120" y="80" text-anchor="middle" font-size="12" font-weight="700" fill="white">Base Station</text>
+    <text x="120" y="108" text-anchor="middle" font-size="10" fill="#555">4 BS × 64 antennas</text>
+    <text x="120" y="128" text-anchor="middle" font-size="10" fill="#555">3.5 GHz · 100 MHz</text>
+    <text x="120" y="148" text-anchor="middle" font-size="10" fill="#555">46 dBm Tx power</text>
+    <text x="120" y="168" text-anchor="middle" font-size="10" fill="#555">50 PRBs / slot</text>
+    <line x1="50" y1="182" x2="190" y2="182" stroke="#ecf0f1"/>
+    <text x="120" y="200" text-anchor="middle" font-size="10" fill="#555" font-weight="600">OFDMA waveform</text>
+    <text x="120" y="220" text-anchor="middle" font-size="9" fill="#888">DL comms + radar</text>
+    <text x="120" y="240" text-anchor="middle" font-size="9" fill="#888">Adaptive power split</text>
+    <text x="120" y="260" text-anchor="middle" font-size="9" fill="#888">Beamforming gain</text>
+    <text x="120" y="280" text-anchor="middle" font-size="9" fill="#888">PA eff. η = 0.35</text>
+  </g>
+
+  <!-- Channel -->
+  <g filter="url(#sh)">
+    <rect x="260" y="60" width="200" height="120" rx="10" fill="white" stroke="#1ABC9C" stroke-width="2"/>
+    <rect x="260" y="60" width="200" height="28" rx="10" fill="#1ABC9C"/>
+    <rect x="260" y="76" width="200" height="12" fill="#1ABC9C"/>
+    <text x="360" y="80" text-anchor="middle" font-size="12" font-weight="700" fill="white">Channel Model</text>
+    <text x="360" y="108" text-anchor="middle" font-size="9" fill="#555">Path loss: 32.4+20log(f)+10αlog(d)</text>
+    <text x="360" y="125" text-anchor="middle" font-size="9" fill="#555">Shadowing: N(0, 8 dB)</text>
+    <text x="360" y="142" text-anchor="middle" font-size="9" fill="#555">Rician fading: K = 5 dB</text>
+    <text x="360" y="159" text-anchor="middle" font-size="9" fill="#555">Temporal: AR(1), ρ = 0.95</text>
+  </g>
+
+  <!-- Communication Path -->
+  <g filter="url(#sh)">
+    <rect x="510" y="60" width="220" height="120" rx="10" fill="white" stroke="#3498DB" stroke-width="2"/>
+    <rect x="510" y="60" width="220" height="28" rx="10" fill="#3498DB"/>
+    <rect x="510" y="76" width="220" height="12" fill="#3498DB"/>
+    <text x="620" y="80" text-anchor="middle" font-size="12" font-weight="700" fill="white">Communication</text>
+    <text x="620" y="108" text-anchor="middle" font-size="9" fill="#555">SINR = P·g_s / (Σ P·g_i + N + J)</text>
+    <text x="620" y="125" text-anchor="middle" font-size="9" fill="#555">SE = min(log₂(1+SINR), 8)</text>
+    <text x="620" y="142" text-anchor="middle" font-size="9" fill="#555">Throughput = BW × n_RB × SE</text>
+    <text x="620" y="159" text-anchor="middle" font-size="9" fill="#555">Outage: SINR &lt; 0 dB</text>
+  </g>
+
+  <!-- UE -->
+  <g filter="url(#sh)">
+    <rect x="790" y="60" width="180" height="120" rx="10" fill="white" stroke="#27AE60" stroke-width="2"/>
+    <rect x="790" y="60" width="180" height="28" rx="10" fill="#27AE60"/>
+    <rect x="790" y="76" width="180" height="12" fill="#27AE60"/>
+    <text x="880" y="80" text-anchor="middle" font-size="12" font-weight="700" fill="white">40 Mobile Users</text>
+    <text x="880" y="108" text-anchor="middle" font-size="9" fill="#555">Pedestrian: 1–5 m/s</text>
+    <text x="880" y="125" text-anchor="middle" font-size="9" fill="#555">Random waypoint</text>
+    <text x="880" y="142" text-anchor="middle" font-size="9" fill="#555">Nearest-BS association</text>
+    <text x="880" y="159" text-anchor="middle" font-size="9" fill="#555">Per-UE SINR / throughput</text>
+  </g>
+
+  <!-- Sensing Path -->
+  <g filter="url(#sh)">
+    <rect x="260" y="200" width="200" height="120" rx="10" fill="white" stroke="#E67E22" stroke-width="2"/>
+    <rect x="260" y="200" width="200" height="28" rx="10" fill="url(#gO)"/>
+    <rect x="260" y="216" width="200" height="12" fill="url(#gO)"/>
+    <text x="360" y="220" text-anchor="middle" font-size="12" font-weight="700" fill="white">Radar Equation</text>
+    <text x="360" y="248" text-anchor="middle" font-size="9" fill="#555">SNR = P·G_tx·G_rx·σ·λ² /</text>
+    <text x="360" y="265" text-anchor="middle" font-size="9" fill="#555">(4π)³·d⁴·(N+C)·L</text>
+    <text x="360" y="285" text-anchor="middle" font-size="9" fill="#555">Integration: 4 slots</text>
+    <text x="360" y="302" text-anchor="middle" font-size="9" fill="#555">Processing loss: 3 dB</text>
+  </g>
+
+  <g filter="url(#sh)">
+    <rect x="510" y="200" width="220" height="120" rx="10" fill="white" stroke="#E67E22" stroke-width="2"/>
+    <rect x="510" y="200" width="220" height="28" rx="10" fill="url(#gO)"/>
+    <rect x="510" y="216" width="220" height="12" fill="url(#gO)"/>
+    <text x="620" y="220" text-anchor="middle" font-size="12" font-weight="700" fill="white">Sensing Metrics</text>
+    <text x="620" y="248" text-anchor="middle" font-size="9" fill="#555">P_d: Swerling-I sigmoid approx.</text>
+    <text x="620" y="265" text-anchor="middle" font-size="9" fill="#555">P_fa = 10⁻⁴</text>
+    <text x="620" y="285" text-anchor="middle" font-size="9" fill="#555">CRLB tracking: c/(2B√(2·SNR))</text>
+    <text x="620" y="302" text-anchor="middle" font-size="9" fill="#555">Utility = 0.6·P_d + 0.4·accuracy</text>
+  </g>
+
+  <!-- Targets -->
+  <g filter="url(#sh)">
+    <rect x="790" y="200" width="180" height="120" rx="10" fill="white" stroke="#E67E22" stroke-width="2"/>
+    <rect x="790" y="200" width="180" height="28" rx="10" fill="url(#gO)"/>
+    <rect x="790" y="216" width="180" height="12" fill="url(#gO)"/>
+    <text x="880" y="220" text-anchor="middle" font-size="12" font-weight="700" fill="white">10 Sensing Targets</text>
+    <text x="880" y="248" text-anchor="middle" font-size="9" fill="#555">Vehicular: 5–20 m/s</text>
+    <text x="880" y="265" text-anchor="middle" font-size="9" fill="#555">RCS = 1.0 m²</text>
+    <text x="880" y="285" text-anchor="middle" font-size="9" fill="#555">Mono-static radar</text>
+    <text x="880" y="302" text-anchor="middle" font-size="9" fill="#555">Nearest-BS detection</text>
+  </g>
+
+  <!-- Arrows -->
+  <line x1="210" y1="120" x2="260" y2="120" stroke="#2980B9" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="210" y1="260" x2="260" y2="260" stroke="#2980B9" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="460" y1="120" x2="510" y2="120" stroke="#2980B9" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="460" y1="260" x2="510" y2="260" stroke="#2980B9" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="730" y1="120" x2="790" y2="120" stroke="#2980B9" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="730" y1="260" x2="790" y2="260" stroke="#2980B9" stroke-width="2" marker-end="url(#a)"/>
+
+  <text x="500" y="348" text-anchor="middle" font-size="9" fill="#bdc3c7">communication.py + sensing.py + channel.py · 1000×1000 m area · Clutter CNR = 5 dB · Noise figure 7 dB</text>
+</svg>
